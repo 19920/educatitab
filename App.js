@@ -1,6 +1,7 @@
 
 
 import React, {Component} from 'react';
+
 import {createStackNavigator,createDrawerNavigator,createBottomTabNavigator,createSwitchNavigator} from 'react-navigation';
 import {Platform, StyleSheet, Text, View,TouchableOpacity,StatusBar} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
