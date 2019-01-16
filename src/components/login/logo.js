@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
         marginTop:50,
         flex:1,
         flexDirection:'row',
-        maxHeight:100
+        maxHeight:50
     },
     educate:{
         fontSize:40,

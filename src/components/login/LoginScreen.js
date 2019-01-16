@@ -16,6 +16,9 @@ export default class LoginScreen extends Component{
         }
         this.showLogin = this.showLogin.bind(this);
     }
+    static navigationOptions = {
+        title:'Login'
+    }
    
    
     showLogin=()=>{
@@ -41,7 +44,8 @@ const styles = StyleSheet.create({
         flex: 1,
          alignItems: 'center',
          backgroundColor: 'red',
-         opacity:0.8
+         opacity:1,
+         justifyContent:'center'
     },
    
 })
