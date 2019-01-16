@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Button,TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet,TouchableOpacity } from 'react-native';
 import Input from './inputForm';
 import Validation from '../validation/validationForm';
+import { connect } from 'react-redux';
+import { signIn }  from '../store/actions/user_action';
 
-export default class LoginForm extends Component{
+
+
+class LoginForm extends Component{
     constructor(props){
         super(props)
         this.state = {
@@ -19,7 +23,7 @@ export default class LoginForm extends Component{
                     rules:{
                         isRequred:true,
                         minLength:10,
-                        maxLength:10
+                        maxLength:13
                         
                     }
     
@@ -35,7 +39,7 @@ export default class LoginForm extends Component{
                     }
     
                 },
-                 /*
+               
                 confirmPassword:{
                     value:'',
                     valid:false,
@@ -46,17 +50,27 @@ export default class LoginForm extends Component{
     
     
 
-            }*/ 
+            }
            
             }
         }
-        this.onPressButton = this.onPressButton.bind(this);
+        //this.onPressButton = this.onPressButton.bind(this);
         this.TextChanged =  this.TextChanged.bind(this);
         this.onSubmitForm = this.onSubmitForm.bind(this);
-       
+       this.TextPasswordChanged = this.TextPasswordChanged.bind(this)
     }
 
+    TextPasswordChanged =(name,value)=>{
+        let formCopy = this.state.form;
+       formCopy[name].value = value;
+       let rules = formCopy[name].rules
+       let valid = Validation(value,rules)
+       formCopy[name].valid = valid
+       this.setState({
+           form:formCopy
+       })
 
+    }
     TextChanged =(name,value)=>{
        this.setState({
            hasErrors:false
@@ -86,9 +100,6 @@ export default class LoginForm extends Component{
     }
 
 
-    onPressButton =()=>{
-        alert('login clicked')
-    }
 
     changeButtonType = () =>{
         const type = this.state.type;
@@ -104,7 +115,7 @@ export default class LoginForm extends Component{
         const formCopy = this.state.form;
         for(let key in formCopy){
             if(this.state.type === 'Login'){
-                if(key != 'confirmPassword'){
+                if(key != 'password'){
                    isFormValid = isFormValid && formCopy[key].valid
                     formItems[key] = formCopy[key].value
                 }
@@ -116,7 +127,14 @@ export default class LoginForm extends Component{
             }
         }
         if(isFormValid){
-            alert('passed')
+            if(this.state.type === 'Login'){
+                this.props.signIn(formItems).then(()=>{
+                    console.log('successful')
+                })
+
+            }else{
+               
+            }
 
         }else{
             alert('errors')
@@ -146,29 +164,32 @@ export default class LoginForm extends Component{
                         keyboardType={'number-pad'} 
                       
                         />
-                       <View>
-                        
-                 <Input  
-                        placeholder='password' 
-                        style={styles.input}
-                        type= {this.state.form.password.type}
-                        value= {this.state.form.password.value}
-                        onChangeText={value=>this.TextChanged('password',value)}
-                        secureTextEntry  
-                        />
-                        </View>
-                        <View>
+                         <Input  
+                            placeholder='password' 
+                            style={styles.input}
+                            type= {this.state.form.password.type}
+                            value= {this.state.form.password.value}
+                            //display='none'
+                            onChangeText={value=>this.TextPasswordChanged('password',value)}
+                            secureTextEntry  
+                            />
+                  
+                     
                         {this.state.type!='Login'?
-                            
-                            <Input  placeholder='confirm password'
+                           
+                            <View>
+                                <Input  placeholder='confirm password'
                                 style={styles.input}
                                 type= {this.state.form.confirmPassword.type}
                                 value= {this.state.form.confirmPassword.value}
                                 onChangeText={value=>this.TextChanged('confirmPassword',value)}
                                 secureTextEntry
-                            /> :null 
+                            /> 
+                           
+                            </View> 
+                         :null 
                         }
-                    </View> 
+                   
                         
                       
                   <View style={styles.Button}>
@@ -187,6 +208,8 @@ export default class LoginForm extends Component{
                      <Text>{this.state.action2}</Text>
                   </TouchableOpacity>
                   </View>
+                  
+                
                   </View>
                   </View>
               </View>
@@ -274,8 +297,15 @@ export default class LoginForm extends Component{
       },
       
   })
-
-
+  function mapStateToprops(state){
+     return{
+        User:state.User
+     }
+  }
+  function mapDispatchToProps(dispatch){
+      return {signIn:dispatch(signIn)}
+  }
+  export default connect(mapStateToprops,mapDispatchToProps)(LoginForm)
 
 
 
