@@ -17,7 +17,7 @@ export default class LoginScreen extends Component{
         this.showLogin = this.showLogin.bind(this);
     }
     static navigationOptions = {
-        title:'Login'
+        title:'Welcome'
     }
    
    

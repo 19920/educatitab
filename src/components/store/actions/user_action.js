@@ -1,25 +1,22 @@
-import LOGIN_USER from '../types';
-import  axios from 'axios'
-import {URL} from '../../url/url';
-
-export function signIn(data){
-    const request = axios({
-        method:'POST',
-        url:URL,
-        data:{
-            personnummer: data.personnummer,
-            returnSecureToken:true
-
-        },
-        headers:{
-            'Content-Type':'application/json'
-        }
-    }).then(response =>{
-        console.log(response.data)
-        return response.data
-    });
-    return{
-        Type:LOGIN_USER,
-        payload:request
+import CHECK_USER from '../types';
+import axios from 'axios'
+import { URL } from '../../url/url';
+export function CheskUserSuccess(response){
+    return {
+        type: 'CHECK_USER',
+        payload: response.data
     }
+}
+export function signIn(data) {
+    return function (dispatch) {
+        return axios.post(URL + 'verifyuser', {
+            identifier: data.identifier,
+            returnSecureToken: true
+        }).then(response => {
+            console.log(response.data)
+            return dispatch(CheskUserSuccess(response) )
+        });
+
+    }
+
 }

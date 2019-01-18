@@ -16,7 +16,7 @@ class LoginForm extends Component{
             action2:'Skapa konto',
             hasErrors:true,
             form:{
-                personnummer:{
+                identifier:{
                     value:'',
                     valid:false,
                     type:'textinput',
@@ -40,18 +40,7 @@ class LoginForm extends Component{
     
                 },
                
-                confirmPassword:{
-                    value:'',
-                    valid:false,
-                    type:'textinput',
-                    rules:{
-                       confirmPass:'password'
-                    } 
-    
-    
-
-            }
-           
+               
             }
         }
         //this.onPressButton = this.onPressButton.bind(this);
@@ -128,12 +117,15 @@ class LoginForm extends Component{
         }
         if(isFormValid){
             if(this.state.type === 'Login'){
-                this.props.signIn(formItems).then(()=>{
-                    console.log('successful')
+                this.props.signIn(formItems).
+                then(()=>{
+                    alert('successful')
+                }).catch(error=>{
+                    alert(error)
                 })
 
             }else{
-               
+              
             }
 
         }else{
@@ -155,16 +147,21 @@ class LoginForm extends Component{
                   <View style={{margin:20}}>
                    
                    <Input 
-                        placeholder='personnummer'
+                        placeholder='identifier'
                         style={styles.input}
-                        type= {this.state.form.personnummer.type}
-                        value= {this.state.form.personnummer.value}
-                        onChangeText={value=>this.TextChanged('personnummer',value)}
+                        type= {this.state.form.identifier.type}
+                        value= {this.state.form.identifier.value}
+                        onChangeText={value=>this.TextChanged('identifier',value)}
                         autoCapitalize={'none'}
                         keyboardType={'number-pad'} 
                       
                         />
-                         <Input  
+                         
+                     
+                        {this.state.type!='Login'?
+                           
+                            <View>
+                        <Input  
                             placeholder='password' 
                             style={styles.input}
                             type= {this.state.form.password.type}
@@ -174,17 +171,6 @@ class LoginForm extends Component{
                             secureTextEntry  
                             />
                   
-                     
-                        {this.state.type!='Login'?
-                           
-                            <View>
-                                <Input  placeholder='confirm password'
-                                style={styles.input}
-                                type= {this.state.form.confirmPassword.type}
-                                value= {this.state.form.confirmPassword.value}
-                                onChangeText={value=>this.TextChanged('confirmPassword',value)}
-                                secureTextEntry
-                            /> 
                            
                             </View> 
                          :null 
@@ -303,7 +289,8 @@ class LoginForm extends Component{
      }
   }
   function mapDispatchToProps(dispatch){
-      return {signIn:dispatch(signIn)}
+      return {signIn:function(data){
+         return dispatch(signIn(data))}}
   }
   export default connect(mapStateToprops,mapDispatchToProps)(LoginForm)
 
