@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet,TouchableOpacity } from 'react-native';
-import Input from './inputForm';
-import Validation from '../validation/validationForm';
+//import Input from './inputloginData';
+import toastr from 'toastr';
+import { PasswordPanel,IdentifierPanel,ForgotPasswordPanel } from './Inputpanels';
 import { connect } from 'react-redux';
-import { signIn }  from '../store/actions/user_action';
+import { checkUser }  from '../store/actions/user_action';
 
 
 
@@ -11,276 +12,243 @@ class LoginForm extends Component{
     constructor(props){
         super(props)
         this.state = {
-            type:'Login',
-            action:'Login',
-            action2:'Skapa konto',
             hasErrors:true,
-            form:{
+            loggingIn:false,
+            resetForm:false,
+            redirectOnLogin: false,
+            showPasswordPanel: false,
+            showForgotPanel: false,
+            loginData:{
                 identifier:{
-                    value:'',
-                    valid:false,
-                    type:'textinput',
-                    rules:{
-                        isRequred:true,
-                        minLength:10,
-                        maxLength:13
-                        
-                    }
+                    value:''
+                },
+                password:{
+                    value:''
+                },
+                newPassword:{
+                    value:''
+                },
+                confirmPassword:{
+                    value:''
+                },
+                pin:{
+                    value:''
+                },
+                email:{
+                    value:''
+                },
+
     
                 },
-           
-            password:{
-                    value:'',
-                    valid:false,
-                    type:'textinput',
-                    rules:{
-                        isRequred:true,
-                        minLength:6
-                    }
-    
+                loginType:{
+                    Start :0,
+                    Pasword:1,
+                    contactInfo:2,
+                    resetPass:3
+
                 },
-               
-               
-            }
-        }
-        //this.onPressButton = this.onPressButton.bind(this);
-        this.TextChanged =  this.TextChanged.bind(this);
-        this.onSubmitForm = this.onSubmitForm.bind(this);
-       this.TextPasswordChanged = this.TextPasswordChanged.bind(this)
-    }
+                errors:{
+                identifier:'',
+                password:'',
+                newPassword:'',
+                confirmPassword:'',
+                pin:'',
+                email:''
 
-    TextPasswordChanged =(name,value)=>{
-        let formCopy = this.state.form;
-       formCopy[name].value = value;
-       let rules = formCopy[name].rules
-       let valid = Validation(value,rules)
-       formCopy[name].valid = valid
-       this.setState({
-           form:formCopy
-       })
-
-    }
-    TextChanged =(name,value)=>{
-       this.setState({
-           hasErrors:false
-
-       })
-       let formCopy = this.state.form;
-       formCopy[name].value = value;
-       let rules = formCopy[name].rules
-       let valid = Validation(value,rules)
-       formCopy[name].valid = valid
-       this.setState({
-           form:formCopy
-       })
-       let newText = '';
-       let numbers = '0123456789';
-
-    for (var i=0; i < value.length; i++) {
-        if(numbers.indexOf(value[i]) > -1 ) {
-            newText = newText + value[i];
-        }
-        else {
-         
-            alert("please enter numbers only");
-        }
-    }
-    this.setState({ value: newText });
-    }
-
-
-
-    changeButtonType = () =>{
-        const type = this.state.type;
-        this.setState({
-            type: type === 'Login' ? 'Register' :'Login',
-            action: type === 'Login' ? 'Register' : 'Login',
-            action2: type === 'Login' ? 'Login':'Skapa konto'
-        })
-    }
-    onSubmitForm = () =>{
-        let isFormValid = true;
-        let formItems={};
-        const formCopy = this.state.form;
-        for(let key in formCopy){
-            if(this.state.type === 'Login'){
-                if(key != 'password'){
-                   isFormValid = isFormValid && formCopy[key].valid
-                    formItems[key] = formCopy[key].value
                 }
+               
+            }
+            this.login = this.login.bind(this);
+            this.onChangeText = this.onChangeText.bind(this);
+            this.handleSetLoginType = this.handleSetLoginType.bind(this);
+            this.sendNewPass = this.sendNewPass.bind(this);
+            this.verifyUser = this.verifyUser.bind(this);
+            this.handleKeyUp = this.handleKeyUp.bind(this);
+            this.resetPassword = this.resetPassword.bind(this);
+            this.hidePasswordPanel = this.hidePasswordPanel.bind(this);
+            this.hideForgotPanel = this.hideForgotPanel.bind(this);
 
+        }
+        handleSetLoginType(){
+
+
+        }
+       onChangeText(name,value){
+           let loginDataCopy = this.state.loginData;
+           loginDataCopy[name].value = value;
+           this.setState({loginData:loginDataCopy})
+          
+       }
+        verifyUser(){
+            console.log('clicked')
+            const { loginData } = this.state;
+            this.setState({loggingIn:true});
+            if(loginData.identifier !== ''){
+                console.log(loginData.identifier)
+                this.props.checkUser(loginData.identifier).then((res)=>{
+                    if(res.type === 'CHECK_USER'){
+                        this.setState({showPasswordPanel:true});
+                    }else{
+                        const { checkUserData } = response.payload;
+                        this.setState({
+                            
+                            loginData:{identifier:checkUserData.userName,email:checkUserData.email,smsphone:checkUserData.phone,password:'',newPassword:'',confirmPassword:'',pin:''},
+                            loggingIn:false
+                        });
+                        this.handleSetLoginType(checkUserData.hasPass ? 1:2);
+                    }
+                },(error)=>{
+                    toastr.error('Fel användarnamn');
+                    this.setState({errors: {identifier:'Personnummer finns ej.Kontakta skolan.'},loggingIn:false});
+
+                }
+                );
             }else{
-              isFormValid = isFormValid && formCopy[key].valid
-                formItems[key] = formCopy[key].value
-
+                this.setState({errors:{identifier:'Personnummer krävs.'},loggingIn:false})
             }
         }
-        if(isFormValid){
-            if(this.state.type === 'Login'){
-                this.props.signIn(formItems).
-                then(()=>{
-                    alert('successful')
-                }).catch(error=>{
-                    alert(error)
-                })
+        login(){
 
-            }else{
-              
+        }
+        sendNewPass(){
+
+        }
+        handleKeyUp(){
+
+        }
+        resetPassword(){
+
+        }
+        loginFormIsValid(){
+            let formIsValid = true;
+            const { loginType,loginData } = this.state;
+            if(loginData.identifier.length < 1){
+                errors.identifier = 'Personnummer krävs';
+                formIsValid = false;
             }
+            switch(loginType){
+                case loginType.Pasword:
+                if(loginData.password.length < 1){
+                    errors.password = 'Lösenord krävs';
+                    this.updatedLoginData.focus();
+                }
+                break;
+                case loginType.contactInfo:
+                if(loginData.newPassword.length < 1){
+                    errors.newPassword = 'Lösenord krävs';
+                    formIsValid = false
+                }
+                if(loginData.confirmPassword.length < 1){
+                    errors.confirmPassword = 'Bekräfta din nya lösenord';
+                    formIsValid = false;
+                }
+                if(loginData.newPassword != loginData.confirmPassword){
+                    errors.confirmPassword = 'Lösenord stämmer inte.';
+                    formIsValid = false;
 
-        }else{
-            alert('errors')
+                }
+               break;
+               case loginType.resetPass:
+               if(loginData.newPassword.length < 1){
+                   errors.newPassword = 'Lösenord krävs';
+                   formIsValid = false;
+               }
+               if(loginData.confirmPassword.length <1){
+                   errors.confirmPassword = 'Bekräfta ditt nya lösenord.';
+                   formIsValid = false;
+
+               }
+               if(loginData.newPassword != loginData.confirmPassword){
+                errors.confirmPassword = 'Lösenord stämmer inte.';
+                formIsValid = false;
+
+            }
+            if(loginData.pin.length < 1){
+                errors.email = 'Pin krävs'
+            }
+            break;
+            }
+            this.setState({errors});
+            return formIsValid;
+        }
+        hidePasswordPanel(){
             this.setState({
-                hasErrors:true
+                showPasswordPanel:false,loginType:loginType.Start
             })
-            
         }
+        hideForgotPanel(){
+            this.setState({
+                showForgotPanel:false,showPasswordPanel:true,loginType:loginType.Pasword
+            });
 
-    }
+        }
+        
+   
     
     render(){
+        const {showPasswordPanel,showForgotPanel,loggingIn,loginData,errors,loginType } = this.state;
+        
+        const shouldShowIdentifierPanel = !showPasswordPanel  && !showForgotPanel;
         return(
             <View style={styles.container}>
-              <View style={styles.login}>
-              <View style={styles.inloggining}>
-                  <Text style={styles.loggain}> Logga in</Text>
-                  <View style={{margin:20}}>
-                   
-                   <Input 
-                        placeholder='identifier'
-                        style={styles.input}
-                        type= {this.state.form.identifier.type}
-                        value= {this.state.form.identifier.value}
-                        onChangeText={value=>this.TextChanged('identifier',value)}
-                        autoCapitalize={'none'}
-                        keyboardType={'number-pad'} 
-                      
-                        />
-                         
-                     
-                        {this.state.type!='Login'?
-                           
-                            <View>
-                        <Input  
-                            placeholder='password' 
-                            style={styles.input}
-                            type= {this.state.form.password.type}
-                            value= {this.state.form.password.value}
-                            //display='none'
-                            onChangeText={value=>this.TextPasswordChanged('password',value)}
-                            secureTextEntry  
-                            />
-                  
-                           
-                            </View> 
-                         :null 
-                        }
-                   
-                        
-                      
-                  <View style={styles.Button}>
-                  <TouchableOpacity  
-                          onPress={this.onSubmitForm}
-                         >
-                     <Text style={{ color:'blue',alignItems:'flex-end'}}>
-                     {this.state.action} 
-                     </Text>
-                  </TouchableOpacity>
-                  </View>
-                  <View style={styles.Button}>
-                  <TouchableOpacity  
-                          onPress={this.changeButtonType}
-                         style={{color:'lightgrey'}}>
-                     <Text>{this.state.action2}</Text>
-                  </TouchableOpacity>
-                  </View>
-                  
+                <View style={styles.identifier}>
+                    <IdentifierPanel 
+                    loginData={loginData}
+                    onChangeText={value =>this.onChangeText('identifier',value)}
+                    errors={errors}
+                    showpanel={shouldShowIdentifierPanel}
+                    loggingIn={loggingIn}
+                    verifyuser={this.verifyUser}
+                    
+                    />
+                </View>
+              
+                <View style={styles.password}>
+            
+                    <PasswordPanel 
+                    loginData={loginData}
+                    onChangeText={value =>this.onChangeText('password',value)}
+                    errors={errors}
+                    showpanel={showPasswordPanel}
+                    handleHidePanel={this.hidePasswordPanel}
+                    login={this.login}
+                    loginType={loginType}
+                    loggingIn={loggingIn}
+                    verifyUser={this.verifyUser}
+                    
+                    />
+                </View>
+                <View style={styles.forgotPassword}>
+                    <ForgotPasswordPanel 
+                    loginData={loginData}
+                    onChangeText={value =>this.onChangeText('password',value)}
+                    errors={errors}
+                    showpanel={showForgotPanel}
+                    handleHidePanel={this.hideForgotPanel}
+                    login={this.login}
+                    loggingIn={loggingIn}
+                   sendNewPass={this.sendNewPass}
+                 
+                    />
+                </View>
                 
-                  </View>
-                  </View>
-              </View>
-          </View>
+
+
+            </View>
+           
       )
       }
       }
   const styles = StyleSheet.create({
-      container: {
-        flex:1,
-        alignItems:'center',
+    container:{
         
-          
-         
-      },
-      input: {
-          width: 300,
-          height:10,
-          alignItems:'center',
-          borderWidth:7,
-          borderColor:'red',
-          textAlign: 'center',
-          
-      },
-      inloggining:{
-     
-          backgroundColor: 'white',
-          borderWidth:2,
-          borderColor:'black',
-          
-         
-          
-  
-      },
-      Button: {
-          margin: 10,
-          width:100,
-          textAlign:'center',
-          justifyContent:'flex-end'
-          
+        borderColor:'black',
+        borderWidth:5,
+        height:200,
+        textAlign:'center'
       
-          
-      },
-      loggain:{
-          fontSize:30,
-              color:'white',
-              backgroundColor:'red',
-              width:300,
-              textAlign:'center',
-              height:50
-      },
-     
-      
-      login: {
-          paddingTop:20,
-          fontSize: 30,
-          color: 'white',
-          alignItems: 'center',
-         
-      },
-     
-      loginButton: {
-          fontSize: 20,
-          textAlign: 'center',
-          color: 'white',
-          borderWidth:1,
-          justifyContent:'flex-end',
-          borderColor:'black',
-          backgroundColor: 'red',
-  
-          
-      },
-     
-      signContent: {
-          paddingTop: 10,
-          color:'white',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection:'row'
-  
-      },
-      signupText: {
-          fontWeight:'bold', 
-          color:'black',
-      },
+        
+    },
       
   })
   function mapStateToprops(state){
@@ -289,8 +257,8 @@ class LoginForm extends Component{
      }
   }
   function mapDispatchToProps(dispatch){
-      return {signIn:function(data){
-         return dispatch(signIn(data))}}
+      return {checkUser:function(data){
+         return dispatch(checkUser(data))}}
   }
   export default connect(mapStateToprops,mapDispatchToProps)(LoginForm)
 

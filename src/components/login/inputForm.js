@@ -7,9 +7,9 @@ const Input = (props) =>{
         case 'textinput':
         template=
         
-        <TextInput underlineColorAndroid='rgba(0 0 0 0)'
+        <TextInput 
         {...props}
-        style={[props.overrideStyle]} 
+        style={[styles.input,props.overrideStyle]} 
         />
        
         break;
@@ -21,6 +21,11 @@ const Input = (props) =>{
 }
 
 const styles = StyleSheet.create({
+    input:{
+        borderColor:'black',
+        borderWidth:2,
+        height:40
+    }
    
 })
 
