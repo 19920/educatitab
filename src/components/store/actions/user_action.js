@@ -3,8 +3,11 @@ import
     CHECK_USER,
     CHECK_USER_SUCCESS,
     LOGIN_USER,
-    CHECKUSER_ERROR
+    CHECKUSER_ERROR,
+    LocalStorekeys
 } from '../types';
+import {setAuthorizationToken,removeAuthorizationToken } from '../../profile/utils';
+import jwtdecode from 'jwt-decode';
 import axios from 'axios'
 import { URL } from '../../url/url';
 
@@ -13,12 +16,6 @@ export function checkUserError(){
 
 }
  
-export function LoginUserSuccess(response){
-    return{
-        type:'LOGIN_USER',
-        payload:response.data
-    }
-}
 
 export function checkUserSuccess(response){
    
@@ -40,6 +37,12 @@ export function checkUser(identifier) {
     }
 
 }
+export function LoginUserSuccess(response){
+    return{
+        type:'LOGIN_USER',
+        payload:response.data
+    }
+}
 
 export function loginUser(data){
     return function(dispatch){
@@ -53,4 +56,17 @@ export function loginUser(data){
         })
     }
 
+}
+export function LogoutUserSuccess(){
+    return{type:'LOGOUT_SUCCESS'}
+}
+
+export function LogoutUser(){
+    return function(dispatch){
+        return new Promise((res,rej)=>{
+          localStorage.removeItem(LocalStorekeys.JWTTOKEN,TOKEN);
+          removeAuthorizationToken();
+            dispatch(LoginUserSuccess())
+        })
+    }
 }

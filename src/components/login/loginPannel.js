@@ -27,6 +27,7 @@ export default class LoginPannel extends Component {
         }
     }
     render(){
+        const {navigation} =this.props
         return(
             <View>
                 <Animated.View style = {{
@@ -36,7 +37,7 @@ export default class LoginPannel extends Component {
                         outputRange:[100,30]
                     })
                 }}>
-                   <LoginForm />
+                   <LoginForm navigation ={navigation}/>
                 </Animated.View>
             </View>
         )

@@ -7,12 +7,13 @@ import {Platform, StyleSheet, Text, View,TouchableOpacity,StatusBar} from 'react
 import Icon from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './src/components/home/HomeScreen';
 import LoginScreen from './src/components/login/LoginScreen';
-import RegisterScreen from './src/components/login/RegisterScreen';
+import LoginForm from './src/components/login/loginForm';
 import DiplomaScreen from './src/components/documents/DiplomaScreen';
 import CertificateScreen from './src/components/documents/CertificateScreen';
 import TestScreen from './src/components/documents/Test';
 import ProfileScreen from './src/components/profile/ProfileScreen';
 import MycvScreen from './src/components/documents/MyCv';
+import loginForm from './src/components/login/loginForm';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -36,6 +37,12 @@ export default class App extends Component {
 const AppNav = createStackNavigator({
   login:{
     screen:LoginScreen
+  },
+  loginForm:{
+    screen:LoginForm
+  },
+  profile:{
+    screen:ProfileScreen
   }
 })
 const myTestsNav = createStackNavigator({

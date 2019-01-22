@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 //import Input from './inputloginData';
+import { stackNavigator } from 'react-navigation';
 import toastr from 'toastr';
 import { PasswordPanel, IdentifierPanel, ForgotPasswordPanel } from './Inputpanels';
 import { connect } from 'react-redux';
@@ -115,6 +116,7 @@ class LoginForm extends Component {
         }
     }
     login() {
+        const {navigation} = this.props
         if (!this.loginFormIsValid()) {
             return (
                 alert('some errors')
@@ -123,6 +125,7 @@ class LoginForm extends Component {
             this.setState({ loggingIn: true, errors: {} })
             this.props.loginUser(this.state.loginData).then((response) => {
                alert(response.payload);
+               navigation.navigate('home');
                
     
             }, (error) => {

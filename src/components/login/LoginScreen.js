@@ -27,13 +27,15 @@ export default class LoginScreen extends Component{
         })
     }
     render(){
+ 
         return(
             <View style={styles.container}>
             <Logo 
             showLogin={this.showLogin}
             />
             <LoginPannel 
-              show={this.state.logoAnimation}/>
+              show={this.state.logoAnimation}
+              navigation={this.props.navigation.navigate('home')}/>
             </View>
         )
     }
