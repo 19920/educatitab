@@ -5,14 +5,14 @@ import { TextInputs } from '../common/TextInput';
 
 
 export const IdentifierPanel =(props)=>{
-    const {loginData,onChangeText,errors,showPanel,verifyuser} = props;
+    const {loginData,onChangeText,errors,showPanel,verifyuser,loggingIn} = props;
     return(
         <View>
             <TextInputs name='identifier' 
             key='identifier' 
             label='Personnummer' 
             placeholder = 'yymmdd-xxxx' 
-            value={loginData.identifier}
+            value={loginData.identifier.value}
             onChangeText={onChangeText}
             error={errors.identifier}
             autofocus={showPanel}
@@ -20,7 +20,7 @@ export const IdentifierPanel =(props)=>{
             />
             <View>
                 <TouchableOpacity onPress={verifyuser}>
-                    <Text>Nästa</Text>
+                    <Text>{loggingIn ? 'Verifierar användare':'Nästa'}</Text>
                 </TouchableOpacity>
             </View>
 
@@ -31,24 +31,25 @@ export const IdentifierPanel =(props)=>{
 export const PasswordPanel=(props)=>{
     const {loginData,onChangeText,errors,login,handleHidePanel,resetPassword,loggingIn,loginType,showPanel} = props;
     return(
-        
+   
         <View>
             <PasswordInput
             name='password'
             key='password'
             label='Lösenord'
-            value={loginData.password}
+            value={loginData.password.value}
             onChangeText={onChangeText}
             error={errors.password}
-            autofocus={loginType=== 1}
-            show
+            autofocus={loginType === 1}
+            showPanel={showPanel}
+            
 
             />
             <TouchableHighlight onPress={resetPassword}>
                 <Text>Glömt lösenord ? klicka här.</Text>
             </TouchableHighlight>
             <TouchableHighlight onPress={handleHidePanel}>
-                <Text>handleHidePanel</Text>
+                <Text>Backa</Text>
             </TouchableHighlight>
             <View>
                 <TouchableOpacity onPress={login}>
@@ -64,16 +65,16 @@ export const PasswordPanel=(props)=>{
 export const ForgotPasswordPanel = (props) =>{
     const {loginData,onChangeText,errors,showPanel,loggingIn,value,handleHidePanel,sendNewPass,showForgotPanel} = props;
     return(
-        !showForgotPanel ?null:
+      
         <View>
             <PasswordInput 
             name='newPassword'
             key='newPassword'
             label='Nytt lösenord'
-            value={loginData.newPassword}
+            value={loginData.newPassword.value}
             onChangeText={onChangeText}
             error={errors}
-            autofocus={showPanel}
+            autofocus={showForgotPanel}
 
             />
              <PasswordInput 

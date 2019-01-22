@@ -1,9 +1,8 @@
 import React from 'react';
-import {CHECK_USER,LOGIN_USER } from '../types';
+import {CHECK_USER_SUCCESS,LOGIN_USER } from '../types';
 export default function(state={},action){
-    console.log(state)
     switch(action.type){
-        case 'CHECK_USER':
+        case 'CHECK_USER_SUCCESS':
         return{...state,user:action.payload}
         break;
         case 'LOGIN_USER':

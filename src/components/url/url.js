@@ -1,1 +1,1 @@
-export const URL = `http://hilda.yourvoice.se/testsystemutv/appapi/v1/AuthApi/`
+export const URL = `https://vux.yourvoice.se/assessmentdev/appapi/v1/AuthApi/`

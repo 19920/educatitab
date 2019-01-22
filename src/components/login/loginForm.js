@@ -1,266 +1,321 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 //import Input from './inputloginData';
 import toastr from 'toastr';
-import { PasswordPanel,IdentifierPanel,ForgotPasswordPanel } from './Inputpanels';
+import { PasswordPanel, IdentifierPanel, ForgotPasswordPanel } from './Inputpanels';
 import { connect } from 'react-redux';
-import { checkUser }  from '../store/actions/user_action';
+import { checkUser, loginUser } from '../store/actions/user_action';
 
 
 
-class LoginForm extends Component{
-    constructor(props){
+class LoginForm extends Component {
+    constructor(props) {
         super(props)
         this.state = {
-            hasErrors:true,
-            loggingIn:false,
-            resetForm:false,
+            hasErrors: true,
+            loggingIn: false,
+            resetForm: false,
             redirectOnLogin: false,
             showPasswordPanel: false,
             showForgotPanel: false,
-            loginData:{
-                identifier:{
-                    value:''
+            showIdentifierPanel: true,
+            loginData: {
+                identifier: {
+                    value: ''
                 },
-                password:{
-                    value:''
+                password: {
+                    value: ''
                 },
-                newPassword:{
-                    value:''
+                newPassword: {
+                    value: ''
                 },
-                confirmPassword:{
-                    value:''
+                confirmPassword: {
+                    value: ''
                 },
-                pin:{
-                    value:''
+                pin: {
+                    value: ''
                 },
-                email:{
-                    value:''
-                },
-
-    
-                },
-                loginType:{
-                    Start :0,
-                    Pasword:1,
-                    contactInfo:2,
-                    resetPass:3
-
-                },
-                errors:{
-                identifier:'',
-                password:'',
-                newPassword:'',
-                confirmPassword:'',
-                pin:'',
-                email:''
-
+                email: {
+                    value: ''
                 }
-               
+
+
+            },
+            loginType: {
+                Start: 0,
+                Pasword: 1,
+                contactInfo: 2,
+                resetPass: 3
+
+            },
+            errors: {
+                identifier: '',
+                password: '',
+                newPassword: '',
+                confirmPassword: '',
+                pin: '',
+                email: ''
+
             }
-            this.login = this.login.bind(this);
-            this.onChangeText = this.onChangeText.bind(this);
-            this.handleSetLoginType = this.handleSetLoginType.bind(this);
-            this.sendNewPass = this.sendNewPass.bind(this);
-            this.verifyUser = this.verifyUser.bind(this);
-            this.handleKeyUp = this.handleKeyUp.bind(this);
-            this.resetPassword = this.resetPassword.bind(this);
-            this.hidePasswordPanel = this.hidePasswordPanel.bind(this);
-            this.hideForgotPanel = this.hideForgotPanel.bind(this);
 
         }
-        handleSetLoginType(){
+        this.login = this.login.bind(this);
+        this.onChangeText = this.onChangeText.bind(this);
+        this.handleSetLoginType = this.handleSetLoginType.bind(this);
+        this.sendNewPass = this.sendNewPass.bind(this);
+        this.verifyUser = this.verifyUser.bind(this);
+        this.handleKeyUp = this.handleKeyUp.bind(this);
+        this.resetPassword = this.resetPassword.bind(this);
+        this.hidePasswordPanel = this.hidePasswordPanel.bind(this);
+        this.hideForgotPanel = this.hideForgotPanel.bind(this);
+        this.showAllPanels = this.showAllPanels.bind(this);
+        this.loginFormIsValid = this.loginFormIsValid.bind(this);
+
+    }
+    handleSetLoginType() {
 
 
-        }
-       onChangeText(name,value){
-           let loginDataCopy = this.state.loginData;
-           loginDataCopy[name].value = value;
-           this.setState({loginData:loginDataCopy})
-          
-       }
-        verifyUser(){
-            console.log('clicked')
-            const { loginData } = this.state;
-            this.setState({loggingIn:true});
-            if(loginData.identifier !== ''){
-                console.log(loginData.identifier)
-                this.props.checkUser(loginData.identifier).then((res)=>{
-                    if(res.type === 'CHECK_USER'){
-                        this.setState({showPasswordPanel:true});
-                    }else{
-                        const { checkUserData } = response.payload;
+    }
+
+    onChangeText(name, value) {
+        let loginDataCopy = Object.assign({}, this.state.loginData);
+        loginDataCopy[name].value = value;
+        this.setState({ loginData: loginDataCopy })
+
+
+    }
+    verifyUser() {
+        const { loginData } = this.state;
+        this.setState({ loggingIn: true });
+        if (loginData.identifier.value !== '') {
+            this.props.checkUser(loginData.identifier.value).then(
+                (response) => {
+                    //alert(JSON.stringify(response))
+                    if (response.payload.hasPass) {
+                        const checkUserData = response.payload;
                         this.setState({
-                            
-                            loginData:{identifier:checkUserData.userName,email:checkUserData.email,smsphone:checkUserData.phone,password:'',newPassword:'',confirmPassword:'',pin:''},
-                            loggingIn:false
+                            showPasswordPanel: true,
+                            showIdentifierPanel: false,
+                            loginData: { identifier: checkUserData.userName, email: checkUserData.email, smsphone: checkUserData.phone, password: '', newPassword: '', confirmPassword: '', pin: '' },
+                            loggingIn: false
                         });
-                        this.handleSetLoginType(checkUserData.hasPass ? 1:2);
+                        this.handleSetLoginType(checkUserData.hasPass ? 1 : 2);
+                    } else {
+                        this.setState({
+                            showForgotPanel: true,
+                            loggingIn: false
+                        })
                     }
-                },(error)=>{
+                }, (err) => {
                     toastr.error('Fel användarnamn');
-                    this.setState({errors: {identifier:'Personnummer finns ej.Kontakta skolan.'},loggingIn:false});
-
+                    this.setState({ errors: { identifier: 'Personnumret finns ej . Kontakta skolan.' }, loggingIn: false })
+                })
+        } else {
+            this.setState({ errors: { identifier: 'Personnummer krävs.' }, loggingIn: false })
+        }
+    }
+    login() {
+        if (!this.loginFormIsValid()) {
+            return (
+                alert('some errors')
+            );
+        }else{
+            this.setState({ loggingIn: true, errors: {} })
+            this.props.loginUser(this.state.loginData).then((response) => {
+               alert(response.payload);
+               
+    
+            }, (error) => {
+                if (error.response) {
+    
                 }
-                );
-            }else{
-                this.setState({errors:{identifier:'Personnummer krävs.'},loggingIn:false})
             }
-        }
-        login(){
+            )
+    
 
         }
-        sendNewPass(){
+       
 
-        }
-        handleKeyUp(){
 
-        }
-        resetPassword(){
+    }
+    sendNewPass() {
 
+    }
+    handleKeyUp() {
+
+    }
+    resetPassword() {
+
+    }
+    loginFormIsValid() {
+        let formIsValid = true;
+        const { loginType, loginData } = this.state;
+        const errors = this.state.errors
+        if (loginData.identifier.length < 1) {
+            errors.identifier = 'Personnummer krävs';
+            formIsValid = false;
         }
-        loginFormIsValid(){
-            let formIsValid = true;
-            const { loginType,loginData } = this.state;
-            if(loginData.identifier.length < 1){
-                errors.identifier = 'Personnummer krävs';
-                formIsValid = false;
-            }
-            switch(loginType){
-                case loginType.Pasword:
-                if(loginData.password.length < 1){
+        switch (loginType) {
+            case loginType.Pasword:
+                if (loginData.password.length < 1) {
                     errors.password = 'Lösenord krävs';
                     this.updatedLoginData.focus();
                 }
                 break;
-                case loginType.contactInfo:
-                if(loginData.newPassword.length < 1){
+            case loginType.contactInfo:
+                if (loginData.newPassword.length < 1) {
                     errors.newPassword = 'Lösenord krävs';
                     formIsValid = false
                 }
-                if(loginData.confirmPassword.length < 1){
+                if (loginData.confirmPassword.length < 1) {
                     errors.confirmPassword = 'Bekräfta din nya lösenord';
                     formIsValid = false;
                 }
-                if(loginData.newPassword != loginData.confirmPassword){
+                if (loginData.newPassword != loginData.confirmPassword) {
                     errors.confirmPassword = 'Lösenord stämmer inte.';
                     formIsValid = false;
 
                 }
-               break;
-               case loginType.resetPass:
-               if(loginData.newPassword.length < 1){
-                   errors.newPassword = 'Lösenord krävs';
-                   formIsValid = false;
-               }
-               if(loginData.confirmPassword.length <1){
-                   errors.confirmPassword = 'Bekräfta ditt nya lösenord.';
-                   formIsValid = false;
+                break;
+            case loginType.resetPass:
+                if (loginData.newPassword.length < 1) {
+                    errors.newPassword = 'Lösenord krävs';
+                    formIsValid = false;
+                }
+                if (loginData.confirmPassword.length < 1) {
+                    errors.confirmPassword = 'Bekräfta ditt nya lösenord.';
+                    formIsValid = false;
 
-               }
-               if(loginData.newPassword != loginData.confirmPassword){
-                errors.confirmPassword = 'Lösenord stämmer inte.';
-                formIsValid = false;
+                }
+                if (loginData.newPassword.value != loginData.confirmPassword.value) {
+                    errors.confirmPassword = 'Lösenord stämmer inte.';
+                    formIsValid = false;
 
-            }
-            if(loginData.pin.length < 1){
-                errors.email = 'Pin krävs'
-            }
-            break;
-            }
-            this.setState({errors});
-            return formIsValid;
+                }
+                if (loginData.pin.value.length < 1) {
+                    errors.email = 'Pin krävs'
+                }
+                break;
         }
-        hidePasswordPanel(){
-            this.setState({
-                showPasswordPanel:false,loginType:loginType.Start
-            })
-        }
-        hideForgotPanel(){
-            this.setState({
-                showForgotPanel:false,showPasswordPanel:true,loginType:loginType.Pasword
-            });
+        this.setState({ errors });
+        return formIsValid;
+    }
+    hidePasswordPanel() {
+        this.setState({
+            showPasswordPanel: false, showIdentifierPanel: true
+        })
+    }
+    hideForgotPanel() {
+        this.setState({
+            showForgotPanel: false, showPasswordPanel: true, loginType: loginType.Pasword
+        });
 
-        }
-        
-   
-    
-    render(){
-        const {showPasswordPanel,showForgotPanel,loggingIn,loginData,errors,loginType } = this.state;
-        
-        const shouldShowIdentifierPanel = !showPasswordPanel  && !showForgotPanel;
-        return(
-            <View style={styles.container}>
+    }
+    showAllPanels() {
+        const { showPasswordPanel, showForgotPanel, loggingIn, loginData, errors, loginType, showIdentifierPanel } = this.state;
+        if (showIdentifierPanel) {
+            return (
                 <View style={styles.identifier}>
-                    <IdentifierPanel 
-                    loginData={loginData}
-                    onChangeText={value =>this.onChangeText('identifier',value)}
-                    errors={errors}
-                    showpanel={shouldShowIdentifierPanel}
-                    loggingIn={loggingIn}
-                    verifyuser={this.verifyUser}
-                    
+                    <IdentifierPanel
+                        loginData={loginData}
+                        onChangeText={value => this.onChangeText('identifier', value)}
+                        errors={errors}
+                        showpanel={showIdentifierPanel}
+                        loggingIn={loggingIn}
+                        verifyuser={this.verifyUser}
+
                     />
                 </View>
-              
+            )
+
+        }
+        else if (showPasswordPanel) {
+            return (
                 <View style={styles.password}>
-            
-                    <PasswordPanel 
-                    loginData={loginData}
-                    onChangeText={value =>this.onChangeText('password',value)}
-                    errors={errors}
-                    showpanel={showPasswordPanel}
-                    handleHidePanel={this.hidePasswordPanel}
-                    login={this.login}
-                    loginType={loginType}
-                    loggingIn={loggingIn}
-                    verifyUser={this.verifyUser}
-                    
+
+                    <PasswordPanel
+                        loginData={loginData}
+                        onChangeText={value => this.onChangeText('password', value)}
+                        errors={errors}
+                        showpanel={showPasswordPanel}
+                        handleHidePanel={this.hidePasswordPanel}
+                        login={this.login}
+                        loginType={loginType}
+                        loggingIn={loggingIn}
+                        verifyUser={this.verifyUser}
+
                     />
                 </View>
+
+            )
+        }
+        else {
+            return (
                 <View style={styles.forgotPassword}>
-                    <ForgotPasswordPanel 
-                    loginData={loginData}
-                    onChangeText={value =>this.onChangeText('password',value)}
-                    errors={errors}
-                    showpanel={showForgotPanel}
-                    handleHidePanel={this.hideForgotPanel}
-                    login={this.login}
-                    loggingIn={loggingIn}
-                   sendNewPass={this.sendNewPass}
-                 
+                    <ForgotPasswordPanel
+                        loginData={loginData}
+                        onChangeText={value => this.onChangeText('newPassword', value)}
+                        errors={errors}
+                        showpanel={showForgotPanel}
+                        handleHidePanel={this.hideForgotPanel}
+                        login={this.login}
+                        loggingIn={loggingIn}
+                        sendNewPass={this.sendNewPass}
+
                     />
                 </View>
-                
+
+            )
+        }
+    }
+
+
+
+    render() {
+
+
+        return (
+            <View style={styles.container}>
+                {this.showAllPanels()}
+                {this.state.erros}
 
 
             </View>
-           
-      )
-      }
-      }
-  const styles = StyleSheet.create({
-    container:{
-        
-        borderColor:'black',
-        borderWidth:5,
-        height:200,
-        textAlign:'center'
-      
-        
+
+        )
+    }
+}
+const styles = StyleSheet.create({
+    container: {
+
+        borderColor: 'black',
+        borderWidth: 5,
+        height: 200,
+        textAlign: 'center'
+
+
     },
-      
-  })
-  function mapStateToprops(state){
-     return{
-        User:state.User
-     }
-  }
-  function mapDispatchToProps(dispatch){
-      return {checkUser:function(data){
-         return dispatch(checkUser(data))}}
-  }
-  export default connect(mapStateToprops,mapDispatchToProps)(LoginForm)
+
+})
+function mapStateToprops(state) {
+    return {
+        User: state.User
+    }
+}
+const mapDispatchToProps = (dispatch) => ({
+    checkUser: (identifier) => {
+        return dispatch(checkUser(identifier))
+    },
+    loginUser: (loginData) => {
+        return dispatch(loginUser(loginData))
+
+    }
+
+
+
+
+})
+export default connect(mapStateToprops, mapDispatchToProps)(LoginForm)
 
 
 
@@ -270,4 +325,4 @@ class LoginForm extends Component{
 
 
 
- 
+
