@@ -9,7 +9,7 @@ const Input = (props) =>{
         
         <TextInput 
         {...props}
-        style={[styles.input,props.overrideStyle]} 
+        style={styles.input} 
         />
        
         break;
@@ -22,9 +22,9 @@ const Input = (props) =>{
 
 const styles = StyleSheet.create({
     input:{
-        borderColor:'black',
-        borderWidth:2,
-        height:40
+        marginTop:10
+
+       
     }
    
 })

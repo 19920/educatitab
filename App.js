@@ -37,13 +37,8 @@ export default class App extends Component {
 const AppNav = createStackNavigator({
   login:{
     screen:LoginScreen
-  },
-  loginForm:{
-    screen:LoginForm
-  },
-  profile:{
-    screen:ProfileScreen
   }
+  
 })
 const myTestsNav = createStackNavigator({
   home:{
@@ -58,10 +53,10 @@ const myTestsNav = createStackNavigator({
   },
   certificate:{
     screen:CertificateScreen
-  }, 
-   profile:{
-    screen:ProfileScreen
-  }
+  },
+   
+ 
+   
 })
 const AppTabNavigator = createBottomTabNavigator({
   home:{
@@ -97,7 +92,7 @@ const AppStackNavigator = createStackNavigator({
 })
 const AppDrawerNavigator = createDrawerNavigator({
   menu:{
-    screen:AppTabNavigator
+    screen:AppTabNavigator,
   },
   home:{
     screen:AppStackNavigator
@@ -110,13 +105,15 @@ const AppSwitchNavigator = createSwitchNavigator({
   App:{
     screen:AppDrawerNavigator
   }
+},{
+  initialRouteName:'Login'
 })
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor:'#FF0000',
+   
    
   }
 

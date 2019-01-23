@@ -3,7 +3,7 @@ import jwtDecode from 'jwt-decode';
 import { connect } from 'react-redux';
 
 import {View,Text,TouchableOpacity} from 'react-native';
-import { LogoutUser, loginUser } from '../store/actions/user_action';
+import { LogoutUser } from '../store/actions/user_action';
 
  class ProfileScreen extends Component{
     constructor(props){
@@ -11,12 +11,23 @@ import { LogoutUser, loginUser } from '../store/actions/user_action';
         this.state = {
 
         }
+        this.logout = this.logout.bind(this);
+        
+
+    }
+    logout() {
+        const {navigation} = this.props;
+        this.props.LogoutUser().then(()=>{
+           navigation.navigate('login')
+
+        });
     }
     render(){
+       
         return(
             <View>
                 <Text>Profile Page</Text>
-                <TouchableOpacity onPress={()=>this.props.navigation.navigate('login')}>
+                <TouchableOpacity onPress={this.logout}>
                     <Text>Logout</Text>
                 </TouchableOpacity>
                 
@@ -26,12 +37,12 @@ import { LogoutUser, loginUser } from '../store/actions/user_action';
 }
 function mapStateToProps(state){
     return{
-        isAuthed: state.auth.isAuthenticated
+        isAuthenticated: state.isAuthenticated
     };
 }
-const mapDispathToProps = (dispatch) =>{
+const mapDispatchToProps = (dispatch) =>({
     LogoutUser:()=>{
         return dispatch(LogoutUser());
     }
-}
-export default connect(mapStateToProps,mapDispathToProps)(ProfileScreen)
+})
+export default connect(mapStateToProps,mapDispatchToProps)(ProfileScreen)

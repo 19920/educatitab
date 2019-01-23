@@ -9,9 +9,9 @@ export default class PasswordInput extends Component {
   render() {
       const{errors,name,label,placeholder,value,onChangeText } = this.props;
     return (
-      <View>
-          <Text>{label}</Text>
-          <View style={styles.password}>
+        <View>
+        <Text style={styles.label}>{label}</Text>
+         <View style={styles.inputs}>
           <TextInput 
           type='password'
           name={name}
@@ -33,12 +33,20 @@ export default class PasswordInput extends Component {
 }
 
 const styles = StyleSheet.create({
-  password:{
+  inputs:{
          width:300,
           height:40,
           borderWidth:2,
           borderColor:'black',
           backgroundColor:'white',
-          color:'black'
+          color:'black',
+          textAlign:'center',
+          
+  },
+  label:{
+    fontSize:20
+  },
+  title:{
+    backgroundColor:'red'
   }
 })

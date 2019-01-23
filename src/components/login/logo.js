@@ -55,21 +55,23 @@ export default class Logo extends Component{
 
 const styles = StyleSheet.create({
     logoStyles:{
-        marginTop:50,
         flex:1,
+        justifyContent:'center',
         flexDirection:'row',
-        maxHeight:50
+        maxHeight:30
     },
     educate:{
         fontSize:40,
         fontFamily:'Roboto-Italic',
-        color:'white'
+        color:'black'
 
     },
     it:{
         fontSize:40,
         fontFamily:'Roboto-Italic',
-        color:'black'
+        color:'red',
+        backgroundColor:'#D3D3D3',
+        height:50
 
     }
 })

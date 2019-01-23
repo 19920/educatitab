@@ -4,7 +4,8 @@ import {View,Text,TextInput,StyleSheet} from 'react-native';
 export const TextInputs = (props) => {
   return (
     <View>
-      <Text>{props.label}</Text>
+      
+      <Text style={styles.label}>{props.label}</Text>
       <View style={styles.inputs}>
       <TextInput 
       placeholder={props.placeholder}
@@ -31,8 +32,13 @@ const styles = StyleSheet.create({
           borderColor:'black',
           backgroundColor:'white',
           color:'black',
-          textAlign:'center'
-  }
+          textAlign:'center',
+          
+  },
+  label:{
+    fontSize:20
+  },
+
 })
 
 

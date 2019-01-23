@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {View,Text,TextInput,TouchableOpacity,TouchableHighlight} from 'react-native';
+import {View,Text,TextInput,StyleSheet,TouchableOpacity,TouchableHighlight} from 'react-native';
 import  PasswordInput  from '../common/PasswordInput';
 import { TextInputs } from '../common/TextInput';
 
@@ -7,7 +7,11 @@ import { TextInputs } from '../common/TextInput';
 export const IdentifierPanel =(props)=>{
     const {loginData,onChangeText,errors,showPanel,verifyuser,loggingIn} = props;
     return(
-        <View>
+        <View style={styles.container}>
+        <View style={styles.title}>
+        <Text style={styles.loggin}>Logga in</Text>
+         </View>
+           <View style = {styles.inputs}>
             <TextInputs name='identifier' 
             key='identifier' 
             label='Personnummer' 
@@ -18,9 +22,10 @@ export const IdentifierPanel =(props)=>{
             autofocus={showPanel}
            
             />
-            <View>
+            </View>
+            <View style={styles.buttons}>
                 <TouchableOpacity onPress={verifyuser}>
-                    <Text>{loggingIn ? 'Verifierar användare':'Nästa'}</Text>
+                    <Text style={styles.textButtons}>{loggingIn ? 'Verifierar användare':'Nästa'}</Text>
                 </TouchableOpacity>
             </View>
 
@@ -32,7 +37,12 @@ export const PasswordPanel=(props)=>{
     const {loginData,onChangeText,errors,login,handleHidePanel,resetPassword,loggingIn,loginType,showPanel} = props;
     return(
    
-        <View>
+        <View style={styles.container}>
+        <View style={styles.title}>
+        <Text style={styles.loggin}>Logga in</Text>
+         </View>
+         <View style={{flexDirection:'column'}}>
+         <View style = {styles.inputs}>
             <PasswordInput
             name='password'
             key='password'
@@ -45,19 +55,26 @@ export const PasswordPanel=(props)=>{
             
 
             />
+            </View>
+            <View style={styles.forgotButton}>
             <TouchableHighlight onPress={resetPassword}>
-                <Text>Glömt lösenord ? klicka här.</Text>
+                <Text style={{color:'blue'}}>Glömt lösenord ? klicka här.</Text>
             </TouchableHighlight>
-            <TouchableHighlight onPress={handleHidePanel}>
+            </View>
+            </View>
+
+            <View style={styles.buttons2}>
+            <TouchableHighlight style={styles.buttons21} onPress={handleHidePanel}>
                 <Text>Backa</Text>
             </TouchableHighlight>
-            <View>
-                <TouchableOpacity onPress={login}>
+        
+                <TouchableOpacity style={styles.buttons22} onPress={login}>
                     <Text>
                         {loggingIn ? 'Loggar in ...':'Logga in'}
                     </Text>
                 </TouchableOpacity>
-            </View>
+                </View>
+           
         </View>
     )
 } 
@@ -106,3 +123,53 @@ export const ForgotPasswordPanel = (props) =>{
     )
 
 }
+const styles = StyleSheet.create({
+    container:{
+        flexDirection:'column'
+
+    },
+    inputs:{
+        margin:10,
+        
+    },
+    forgotButton:{
+        marginLeft:10,
+        marginRight:10
+
+    },
+    buttons:{
+     
+     alignItems:'flex-end',
+ 
+     borderRadius:25,
+     marginRight:5
+    },
+    buttons2:{
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'space-between',
+        margin:10
+        
+    },
+    buttons22:{
+     alignItems:'flex-end'
+    },
+    textButtons:{
+
+        fontSize:20,
+        backgroundColor:'red',
+        color:'white'
+    },
+    title:{
+        backgroundColor:'red',
+        height:40,
+        alignItems:'center'
+        
+    },
+    loggin:{
+        marginTop:5,
+        fontSize:20,
+        color:'white'
+    }
+
+})

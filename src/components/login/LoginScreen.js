@@ -35,7 +35,7 @@ export default class LoginScreen extends Component{
             />
             <LoginPannel 
               show={this.state.logoAnimation}
-              navigation={this.props.navigation.navigate('home')}/>
+              navigation={this.props.navigation.navigate}/>
             </View>
         )
     }
@@ -44,10 +44,11 @@ const styles = StyleSheet.create({
     container: {
    
         flex: 1,
+        paddingTop:20,
          alignItems: 'center',
-         backgroundColor: 'red',
-         opacity:1,
-         justifyContent:'center'
+         backgroundColor: '#D3D3D3',
+         opacity:0.7,
+         
     },
    
 })

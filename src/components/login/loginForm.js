@@ -71,6 +71,7 @@ class LoginForm extends Component {
         this.hideForgotPanel = this.hideForgotPanel.bind(this);
         this.showAllPanels = this.showAllPanels.bind(this);
         this.loginFormIsValid = this.loginFormIsValid.bind(this);
+        this.manageAccess = this.manageAccess.bind(this);
 
     }
     handleSetLoginType() {
@@ -83,6 +84,9 @@ class LoginForm extends Component {
         loginDataCopy[name].value = value;
         this.setState({ loginData: loginDataCopy })
 
+
+    }
+    manageAccess=()=>{
 
     }
     verifyUser() {
@@ -125,12 +129,13 @@ class LoginForm extends Component {
             this.setState({ loggingIn: true, errors: {} })
             this.props.loginUser(this.state.loginData).then((response) => {
                alert(response.payload);
-               navigation.navigate('home');
+               navigation('home');
                
     
             }, (error) => {
+                alert(error);
                 if (error.response) {
-    
+                    
                 }
             }
             )
@@ -292,12 +297,18 @@ const styles = StyleSheet.create({
     container: {
 
         borderColor: 'black',
-        borderWidth: 5,
+        borderWidth: 1,
         height: 200,
         textAlign: 'center'
 
 
     },
+    identifier:{
+        borderColor: 'black',    
+        textAlign: 'center',
+        
+      
+    }
 
 })
 function mapStateToprops(state) {

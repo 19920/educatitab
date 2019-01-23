@@ -1,15 +1,20 @@
 import React from 'react';
 import {CHECK_USER_SUCCESS,LOGIN_USER,LOGOUT_SUCCESS} from '../types';
-export default function(state={},action){
+const InitialState = {
+    isAuthenticated: false,
+    user: ''
+}
+export default function(state=[InitialState.isAuthenticated,InitialState.user],action){
     switch(action.type){
         case 'CHECK_USER_SUCCESS':
         return{...state,user:action.payload}
         break;
         case 'LOGIN_USER':
-        return{...state,user:action.payload}
+        const updatedState = Object.assign({},{isAuthenticated: true,user:action.payload})
+        return updatedState
         break;
         case 'LOGOUT_SUCCESS':
-        return{...state,user:action.payload}
+        return  Object.assign({},{isAuthenticated: false,user:''})
         default:
         return state
     }

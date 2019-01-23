@@ -6,6 +6,7 @@ import
     CHECKUSER_ERROR,
     LocalStorekeys
 } from '../types';
+import { AsyncStorage } from "react-native"
 import {setAuthorizationToken,removeAuthorizationToken } from '../../profile/utils';
 import jwtdecode from 'jwt-decode';
 import axios from 'axios'
@@ -40,7 +41,7 @@ export function checkUser(identifier) {
 export function LoginUserSuccess(response){
     return{
         type:'LOGIN_USER',
-        payload:response.data
+        payload:response
     }
 }
 
@@ -52,8 +53,15 @@ export function loginUser(data){
 
         }).then(response=>{
             console.log(response);
-            return dispatch(LoginUserSuccess(response))
-        })
+            const {token} = response.data;
+            AsyncStorage.setItem(LocalStorekeys.JWTTOKEN, token)
+            setAuthorizationToken(token);
+            let decodeToken = jwtdecode(token);
+            alert(JSON.stringify(decodeToken))
+            return dispatch(LoginUserSuccess(decodeToken))
+        }).catch(error=>
+            alert('loggin error\n'+ JSON.stringify(error))
+        )
     }
 
 }
@@ -64,9 +72,9 @@ export function LogoutUserSuccess(){
 export function LogoutUser(){
     return function(dispatch){
         return new Promise((res,rej)=>{
-          localStorage.removeItem(LocalStorekeys.JWTTOKEN,TOKEN);
+          AsyncStorage.removeItem(LocalStorekeys.JWTTOKEN);
           removeAuthorizationToken();
-            dispatch(LoginUserSuccess())
+            dispatch(LogoutUserSuccess())
         })
     }
 }

@@ -9,12 +9,7 @@ export default class HomeScreen extends Component{
         this.onlogoutButton = this.onlogoutButton.bind(this);
     }
     static navigationOptions ={
-        title:'Home',
-        navigationOptions:({navigation})=>({
-            tabBarIcon:({tintColor})=>(
-              <Icon name ='md-home' size={24}/>
-            )
-          })
+        title:'Home'
     }
     onlogoutButton(){
         firebaseRef.auth().signOut().then(function() {
@@ -30,6 +25,10 @@ export default class HomeScreen extends Component{
             <View style={styles.container}>
            
             <ScrollView style={{width:'100%'}}>
+            <TouchableHighlight style={styles.results} onPress={()=>this.props.navigation.navigate('login')}>
+           
+           <Text style={styles.loginButton}>logout <Icon name='ios-checkmark' size={24} /></Text>
+       </TouchableHighlight>
                 <TouchableHighlight style={styles.results} onPress={()=>this.props.navigation.navigate('test')}>
                 <Text style={styles.test}> <Text>TestResultat </Text><Icon name='ios-folder' size={24} /> </Text>
                 </TouchableHighlight>
