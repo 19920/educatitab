@@ -4,6 +4,7 @@ import
     CHECK_USER_SUCCESS,
     LOGIN_USER,
     CHECKUSER_ERROR,
+    AUTO_SIGN_IN,
     LocalStorekeys
 } from '../types';
 import { AsyncStorage } from "react-native"
@@ -11,6 +12,9 @@ import {setAuthorizationToken,removeAuthorizationToken } from '../../profile/uti
 import jwtdecode from 'jwt-decode';
 import axios from 'axios'
 import { URL } from '../../url/url';
+
+
+
 
 export function checkUserError(){
     return{type: 'CHECKUSER_ERROR' }
@@ -52,18 +56,39 @@ export function loginUser(data){
             password: data.password
 
         }).then(response=>{
-            console.log(response);
+            //console.log(response);
             const {token} = response.data;
             AsyncStorage.setItem(LocalStorekeys.JWTTOKEN, token)
             setAuthorizationToken(token);
             let decodeToken = jwtdecode(token);
-            alert(JSON.stringify(decodeToken))
+            //alert(JSON.stringify(decodeToken))
             return dispatch(LoginUserSuccess(decodeToken))
         }).catch(error=>
-            alert('loggin error\n'+ JSON.stringify(error))
+           console.log('loggin error\n'+ JSON.stringify(error))
         )
     }
 
+}
+
+
+export function AutoSignSuccess(response){
+    return{
+        type:'AUTO_SIGN_IN',
+        payload:response
+    }
+}
+export function autoSignIn(refToken){
+    return function(dispatch){
+        return axios.post(URL + 'GetRefreshToken',{
+            data: 'grant_type=refresh_token&refresh_token=' +refToken,
+            headers:{'Content-Type':'application/x-www-urlencoded'}
+        }).then(response=>{
+            alert(response.data)
+            return dispatch(AutoSignSuccess(response.data))  
+        }).catch(err=>{
+            return false
+        })
+    }
 }
 export function LogoutUserSuccess(){
     return{type:'LOGOUT_SUCCESS'}

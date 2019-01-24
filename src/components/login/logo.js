@@ -63,7 +63,8 @@ const styles = StyleSheet.create({
     educate:{
         fontSize:40,
         fontFamily:'Roboto-Italic',
-        color:'black'
+        color:'black',
+        height:50
 
     },
     it:{

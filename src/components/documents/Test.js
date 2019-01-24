@@ -36,7 +36,23 @@ export default class TestScreen extends Component{
 
     }
     static navigationOptions ={
-        title:'My tests'
+        title:'My tests',
+        headerStyle: {
+            backgroundColor: '#16a085',
+            paddingHorizontal: 8,
+            fontWeight: '300'
+          },
+  
+          headerTitleStyle: {
+              fontWeight: '300',
+              textAlign: 'center',
+              color:'white',
+              flexGrow:1,
+              alignSelf:'center',
+              alignItems:'center'
+            
+            
+          }
     }
     render(){
         let books 

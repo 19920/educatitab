@@ -21,7 +21,12 @@ const instructions = Platform.select({
     'Double tap R on your keyboard to reload,\n' +
     'Shake or press menu button for dev menu',
 });
-
+const navStyle={
+  navaBarTextFontSize:20,
+  navBarTextColor:'#ffffff',
+  navBarTitleTextCentered:true,
+  navBarBackgroundColor:'#00ADA9'
+}
 
 export default class App extends Component {
   render() {
@@ -34,9 +39,18 @@ export default class App extends Component {
     );
   }
 }
-const AppNav = createStackNavigator({
-  login:{
-    screen:LoginScreen
+const AppNav = createStackNavigator(
+  {
+  login:{screen:LoginScreen} 
+}
+)
+const ProfileNav = createStackNavigator({
+  profile:{
+    screen:ProfileScreen,
+    
+  },
+  myCV:{
+    screen:MycvScreen
   }
   
 })
@@ -62,14 +76,20 @@ const AppTabNavigator = createBottomTabNavigator({
   home:{
     screen:myTestsNav,
     title:'Home',
+    navigatorStyle:navStyle,
+    navigationOptions:({navigation})=>({
+      tabBarIcon:({tintColor})=>(
+        <Icon name ='md-home' size={24}/>
+      )
+    })
     
   },
   profile:{
-    screen:ProfileScreen,
+    screen:ProfileNav,
     title:'Profile',
     navigationOptions:({navigation})=>({
       tabBarIcon:({tintColor})=>(
-        <Icon name ='person' size={24}/>
+        <Icon name ='md-person' size={24}/>
       )
     })
   },

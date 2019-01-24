@@ -6,6 +6,7 @@ import toastr from 'toastr';
 import { PasswordPanel, IdentifierPanel, ForgotPasswordPanel } from './Inputpanels';
 import { connect } from 'react-redux';
 import { checkUser, loginUser } from '../store/actions/user_action';
+import { setTokens } from '../profile/utils';
 
 
 
@@ -86,9 +87,7 @@ class LoginForm extends Component {
 
 
     }
-    manageAccess=()=>{
-
-    }
+   
     verifyUser() {
         const { loginData } = this.state;
         this.setState({ loggingIn: true });
@@ -119,6 +118,19 @@ class LoginForm extends Component {
             this.setState({ errors: { identifier: 'Personnummer krävs.' }, loggingIn: false })
         }
     }
+    manageAccess=()=>{
+        const {navigation} = this.props
+        if(!this.props.User.user.exp){
+            this.setState({hasErrors: true})
+        }else{
+            setTokens(this.props.User.user,()=>{
+                this.setState({hasErrors: false});
+                navigation('home');
+
+            })
+        }
+
+    }
     login() {
         const {navigation} = this.props
         if (!this.loginFormIsValid()) {
@@ -128,7 +140,8 @@ class LoginForm extends Component {
         }else{
             this.setState({ loggingIn: true, errors: {} })
             this.props.loginUser(this.state.loginData).then((response) => {
-               alert(response.payload);
+                this.manageAccess();
+               //alert(response.payload);
                navigation('home');
                
     

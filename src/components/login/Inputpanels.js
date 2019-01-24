@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
      alignItems:'flex-end',
  
      borderRadius:25,
-     marginRight:5
+     marginRight:12
     },
     buttons2:{
         flexDirection:'row',

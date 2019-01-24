@@ -1,5 +1,5 @@
 import React from 'react';
-import {CHECK_USER_SUCCESS,LOGIN_USER,LOGOUT_SUCCESS} from '../types';
+import {CHECK_USER_SUCCESS,LOGIN_USER,LOGOUT_SUCCESS,AUTO_SIGN_IN} from '../types';
 const InitialState = {
     isAuthenticated: false,
     user: ''
@@ -15,6 +15,10 @@ export default function(state=[InitialState.isAuthenticated,InitialState.user],a
         break;
         case 'LOGOUT_SUCCESS':
         return  Object.assign({},{isAuthenticated: false,user:''})
+        break;
+        case 'AUTO_SIGN_IN':
+        const updateState = Object.assign({},{isAuthenticated: true,user:action.payload})
+        return updateState
         default:
         return state
     }

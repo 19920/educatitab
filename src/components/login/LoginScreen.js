@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Logo from './logo';
 import LoginPannel from './loginPannel'
 import axios from 'axios';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity,AsyncStorage,ScrollView } from 'react-native';
+import { View, StyleSheet,} from 'react-native';
 
 
 
@@ -17,10 +17,24 @@ export default class LoginScreen extends Component{
         this.showLogin = this.showLogin.bind(this);
     }
     static navigationOptions = {
-        title:'Welcome'
-    }
-   
-   
+        title: 'Welcome',
+        headerStyle: {
+          backgroundColor: '#16a085',
+          fontWeight: '300'
+        },
+
+        headerTitleStyle: {
+            fontWeight: '300',
+            textAlign: 'center',
+            color:'white',
+            flexGrow:1,
+            
+          
+          
+        }
+        
+      }
+ 
     showLogin=()=>{
         this.setState({
             logoAnimation: true
@@ -47,7 +61,7 @@ const styles = StyleSheet.create({
         paddingTop:20,
          alignItems: 'center',
          backgroundColor: '#D3D3D3',
-         opacity:0.7,
+         opacity:1,
          
     },
    
