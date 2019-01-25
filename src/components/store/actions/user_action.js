@@ -9,7 +9,7 @@ import
 } from '../types';
 import { AsyncStorage } from "react-native"
 import {setAuthorizationToken,removeAuthorizationToken } from '../../profile/utils';
-import jwtdecode from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 import axios from 'axios'
 import { URL } from '../../url/url';
 
@@ -58,11 +58,18 @@ export function loginUser(data){
         }).then(response=>{
             //console.log(response);
             const {token} = response.data;
-            AsyncStorage.setItem(LocalStorekeys.JWTTOKEN, token)
+       
+            AsyncStorage.setItem(LocalStorekeys.JWTTOKEN, token).then(()=>{
+                
+                
+                 
             setAuthorizationToken(token);
-            let decodeToken = jwtdecode(token);
+            let decodeToken = jwtDecode(token);
             //alert(JSON.stringify(decodeToken))
             return dispatch(LoginUserSuccess(decodeToken))
+
+            })
+          
         }).catch(error=>
            console.log('loggin error\n'+ JSON.stringify(error))
         )

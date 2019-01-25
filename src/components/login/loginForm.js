@@ -120,8 +120,8 @@ class LoginForm extends Component {
     }
     manageAccess=()=>{
         const {navigation} = this.props
-        if(!this.props.User.user.exp){
-            this.setState({hasErrors: true})
+        if(this.props.User.user.exp){
+            alert(this.props.User.user)
         }else{
             setTokens(this.props.User.user,()=>{
                 this.setState({hasErrors: false});
@@ -140,7 +140,7 @@ class LoginForm extends Component {
         }else{
             this.setState({ loggingIn: true, errors: {} })
             this.props.loginUser(this.state.loginData).then((response) => {
-                this.manageAccess();
+                //this.manageAccess();
                //alert(response.payload);
                navigation('home');
                

@@ -3,7 +3,7 @@
 import React, {Component} from 'react';
 
 import {createStackNavigator,createDrawerNavigator,createBottomTabNavigator,createSwitchNavigator} from 'react-navigation';
-import {Platform, StyleSheet, Text, View,TouchableOpacity,StatusBar} from 'react-native';
+import {Platform, StyleSheet, Button, View,TouchableOpacity,StatusBar} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './src/components/home/HomeScreen';
 import LoginScreen from './src/components/login/LoginScreen';
@@ -77,6 +77,7 @@ const AppTabNavigator = createBottomTabNavigator({
     screen:myTestsNav,
     title:'Home',
     navigatorStyle:navStyle,
+    
     navigationOptions:({navigation})=>({
       tabBarIcon:({tintColor})=>(
         <Icon name ='md-home' size={24}/>
