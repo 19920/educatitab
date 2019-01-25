@@ -3,7 +3,7 @@ import jwtDecode from 'jwt-decode';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {View,Text,TouchableOpacity,TouchableHighlight,StyleSheet} from 'react-native';
+import {View,Text,TouchableOpacity,TouchableHighlight,StyleSheet,AsyncStorage} from 'react-native';
 import { LogoutUser } from '../store/actions/user_action';
 
  class ProfileScreen extends Component{
@@ -36,19 +36,19 @@ import { LogoutUser } from '../store/actions/user_action';
           }
         
     }
-    logout() {
+    logout=async()=> {
         const {navigation} = this.props;
-        this.props.LogoutUser().then(()=>{
+        AsyncStorage.clear()
            navigation.navigate('login')
 
-        });
+   
     }
     render(){
        
         return(
             <View>
                 
-                <TouchableOpacity onPress={()=>this.props.navigation.navigate('myCV')}>
+                <TouchableOpacity onPress={this.logout}>
                     <Text>Go to my CV</Text>
                 </TouchableOpacity>
 

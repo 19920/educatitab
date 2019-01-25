@@ -2,8 +2,11 @@
 
 import React, {Component} from 'react';
 
-import {createStackNavigator,createDrawerNavigator,createBottomTabNavigator,createSwitchNavigator} from 'react-navigation';
-import {Platform, StyleSheet, Button, View,TouchableOpacity,StatusBar} from 'react-native';
+import {createStackNavigator,createDrawerNavigator,
+  createBottomTabNavigator,createSwitchNavigator,
+  DrawerItems,
+} from 'react-navigation';
+import {Platform, Dimensions,StyleSheet,SafeAreaView,ScrollView, Button, View,TouchableOpacity,StatusBar} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './src/components/home/HomeScreen';
 import LoginScreen from './src/components/login/LoginScreen';
@@ -21,6 +24,7 @@ const instructions = Platform.select({
     'Double tap R on your keyboard to reload,\n' +
     'Shake or press menu button for dev menu',
 });
+
 const navStyle={
   navaBarTextFontSize:20,
   navBarTextColor:'#ffffff',
@@ -39,6 +43,7 @@ export default class App extends Component {
     );
   }
 }
+
 const AppNav = createStackNavigator(
   {
   login:{screen:LoginScreen} 
@@ -100,6 +105,7 @@ const AppStackNavigator = createStackNavigator({
   AppTabNavigator:{
     screen:AppTabNavigator,
     navigationOptions:({navigation})=>({
+      title: 'EducateIt',
       headerLeft:(
         <TouchableOpacity onPress={()=>navigation.toggleDrawer()}>
         <View style={{paddingHorizontal:10}}>
@@ -113,10 +119,13 @@ const AppStackNavigator = createStackNavigator({
 })
 const AppDrawerNavigator = createDrawerNavigator({
   menu:{
-    screen:AppTabNavigator,
+    screen:AppStackNavigator,
   },
   home:{
-    screen:AppStackNavigator
+    screen:myTestsNav
+  },
+  profile:{
+    screen:ProfileNav
   }
 })
 const AppSwitchNavigator = createSwitchNavigator({

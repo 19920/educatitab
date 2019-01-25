@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {View,Text,StyleSheet,TouchableHighlight,Image,ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {Header,Left,Right} from 'native-base';
 
 //import {firebaseRef} from './Firebase';
 
@@ -22,7 +23,12 @@ export default class HomeScreen extends Component{
               textAlign: 'center',
               color:'white',
               flexGrow:1,
-          }
+          },
+          navigationOptions:({navigation})=>({
+            tabBarIcon:({tintColor})=>(
+              <Icon name ='menu' size={24}/>
+            )
+          })
     }
     onlogoutButton(){
         firebaseRef.auth().signOut().then(function() {
