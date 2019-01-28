@@ -5,6 +5,7 @@ export const CHECK_USER_SUCCESS = 'CHECK_USER_SUCCESS';
 export const CHECKUSER_ERROR = 'CHECKUSER_ERROR';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const AUTO_SIGN_IN = 'AUTO_SIGN_IN';
+export const GET_USER_TESTS = 'GET_USER_TESTS';
 
 
 

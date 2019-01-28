@@ -113,6 +113,9 @@ class LoginForm extends Component {
                 }, (err) => {
                     toastr.error('Fel användarnamn');
                     this.setState({ errors: { identifier: 'Personnumret finns ej . Kontakta skolan.' }, loggingIn: false })
+                }).catch(error=>{
+                    this.setState({errors:'Personnumret finns ej . Kontakta skolan.',loggingIn:false})
+                    alert(this.state.errors)
                 })
         } else {
             this.setState({ errors: { identifier: 'Personnummer krävs.' }, loggingIn: false })
@@ -309,15 +312,15 @@ class LoginForm extends Component {
 const styles = StyleSheet.create({
     container: {
 
-        borderColor: 'black',
+        borderColor: '#707070',
         borderWidth: 1,
-        height: 200,
+        height: 252,
         textAlign: 'center'
 
 
     },
     identifier:{
-        borderColor: 'black',    
+        borderColor: '#707070',    
         textAlign: 'center',
         
       

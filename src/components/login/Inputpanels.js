@@ -125,7 +125,9 @@ export const ForgotPasswordPanel = (props) =>{
 }
 const styles = StyleSheet.create({
     container:{
-        flexDirection:'column'
+        flexDirection:'column',
+        backgroundColor:'white',
+        height:250
 
     },
     inputs:{

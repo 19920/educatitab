@@ -5,6 +5,7 @@ import
     LOGIN_USER,
     CHECKUSER_ERROR,
     AUTO_SIGN_IN,
+    GET_USER_TESTS,
     LocalStorekeys
 } from '../types';
 import { AsyncStorage } from "react-native"
@@ -108,5 +109,20 @@ export function LogoutUser(){
           removeAuthorizationToken();
             dispatch(LogoutUserSuccess())
         })
+    }
+}
+
+export function getUserTestssuccess(reponse){
+    return{
+        type:'GET_USER_TESTS',
+        payload:reponse.data
+    }
+}
+export function getUserTests(sub){
+    return function(dispatch){
+        return axios.get(URL + 'GetFinishedTests',{
+            
+
+        }).then()
     }
 }

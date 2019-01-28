@@ -1,8 +1,6 @@
 import React,{Component} from 'react';
-import jwtDecode from 'jwt-decode';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
-
 import {View,Text,TouchableOpacity,TouchableHighlight,StyleSheet,AsyncStorage} from 'react-native';
 import { LogoutUser } from '../store/actions/user_action';
 
@@ -13,6 +11,8 @@ import { LogoutUser } from '../store/actions/user_action';
 
         }
         this.logout = this.logout.bind(this);
+        this.removeTokens = this.removeTokens.bind(this);
+
         
 
     }
@@ -36,6 +36,13 @@ import { LogoutUser } from '../store/actions/user_action';
           }
         
     }
+    removeTokens=()=>{
+        const {navigation} = this.props;
+        this .props.LogoutUser();
+        alert('token removed')
+        navigation.navigate('login')
+
+    }
     logout=async()=> {
         const {navigation} = this.props;
         AsyncStorage.clear()
@@ -47,14 +54,9 @@ import { LogoutUser } from '../store/actions/user_action';
        
         return(
             <View>
-                
-                <TouchableOpacity onPress={this.logout}>
-                    <Text>Go to my CV</Text>
-                </TouchableOpacity>
-
-                <TouchableHighlight style={styles.results} onPress={()=>this.props.navigation.navigate('login')}>
+                <TouchableHighlight style={styles.results} onPress={this.removeTokens}>
            
-           <Text style={styles.loginButton}>logout <Icon name='ios-checkmark' size={24} /></Text>
+           <Text style={styles.loginButton}>logout </Text>
        </TouchableHighlight>
                 
             </View>
@@ -106,7 +108,7 @@ const styles = StyleSheet.create({
 })
 function mapStateToProps(state){
     return{
-        isAuthenticated: state.isAuthenticated
+        User: state.User
     };
 }
 const mapDispatchToProps = (dispatch) =>({

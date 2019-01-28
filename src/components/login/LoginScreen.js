@@ -9,7 +9,7 @@ import {LoginUserSuccess} from '../store/actions/user_action';
 import {LocalStorekeys } from '../store/types';
 import LoginPannel from './loginPannel'
 import axios from 'axios';
-import { View, StyleSheet,AsyncStorage,ActivityIndicator} from 'react-native';
+import { View, StyleSheet,AsyncStorage,ActivityIndicator,ImageBackground} from 'react-native';
 
 
 
@@ -26,7 +26,7 @@ class LoginScreen extends Component{
     static navigationOptions = {
         title: 'Welcome',
         headerStyle: {
-          backgroundColor: '#16a085',
+          backgroundColor: 'black',
           fontWeight: '300'
         },
 
@@ -65,6 +65,11 @@ class LoginScreen extends Component{
         })
     }
     render(){
+
+
+       
+   
+ 
         if(this.state.loading){
             return(
            <View style={styles.loading}>
@@ -75,6 +80,7 @@ class LoginScreen extends Component{
 
         }else{
             return(
+                <ImageBackground source={require('../../../assets/backImage.png')} style={{width: '100%', height: '100%'}}>
                 <View style={styles.container}>
                 <Logo 
                 showLogin={this.showLogin}
@@ -83,6 +89,7 @@ class LoginScreen extends Component{
                   show={this.state.logoAnimation}
                   navigation={this.props.navigation.navigate}/>
                 </View>
+                </ImageBackground>
             )
 
         }
@@ -96,7 +103,6 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop:20,
          alignItems: 'center',
-         backgroundColor: '#D3D3D3',
          opacity:1,
          
     },

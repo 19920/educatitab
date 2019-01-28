@@ -1,33 +1,30 @@
 import React,{Component} from 'react';
 import {View,Text,StyleSheet,ScrollView,Image,FlatList} from 'react-native';
+import {connect} from 'react-redux';
+import {getUserTests} from '../store/actions/user_action';
 //http://www.json-generator.com/api/json/get/ccLAsEcOSq?indent=1
 
 
-export default class TestScreen extends Component{
+class TestScreen extends Component{
     constructor(props){
         super()
         this.state={
             dataSource:[]
         }
     }
-    componentDidMount(){
-        fetch('http://www.json-generator.com/api/json/get/ccLAsEcOSq?indent=1')
-        .then((response)=>response.json())
-        .then((response)=>{
-           this.setState({
-               dataSource:response.book_array
-           })
-        })
-        .catch((error)=>{
-            console.log(error)
-        })
-    }
+
+
+   
     renderItem=({item})=>{
         return(
             <View style={styles.book}>
                 <Image source={{ uri: item.image }} style={styles.img} />
                 <View style={{flex:1,justifyContent:'center'}}>
-                <Text style={{fontSize:18,color:'green',marginBottom:15}}>{item.book_title}</Text>
+                <Text style={{fontSize:18,color:'green',marginBottom:15}}>{item.customerTestId}</Text>
+                <Text style={{fontSize:18,color:'green',marginBottom:15}}>{item.startDate}</Text>
+                <Text style={{fontSize:18,color:'green',marginBottom:15}}>{item.name}</Text>
+                <Text style={{fontSize:18,color:'green',marginBottom:15}}>{item.schoolName}</Text>
+                <Text style={{fontSize:18,color:'green',marginBottom:15}}>{itemstartLevel}</Text>
                 <Text>{item.author}</Text>
                 </View>
             </View>
@@ -89,3 +86,16 @@ const styles = StyleSheet.create({
      }
 
 })
+function mapStateToProps(state){
+    return{
+        User:state.User
+    }
+
+}
+ const mapDispatchToProps=(dispatch)=>({
+    getUserTests: (sub) => {
+      return dispatch(getUserTests(sub))
+  
+  }
+  })
+  export default connect (mapStateToProps,mapDispatchToProps)(TestScreen);

@@ -1,5 +1,10 @@
 import React from 'react';
-import {CHECK_USER_SUCCESS,LOGIN_USER,LOGOUT_SUCCESS,AUTO_SIGN_IN} from '../types';
+import {CHECK_USER_SUCCESS,
+    LOGIN_USER,
+    LOGOUT_SUCCESS,
+    AUTO_SIGN_IN,
+    GET_USER_TESTS
+} from '../types';
 const InitialState = {
     isAuthenticated: false,
     user: ''
