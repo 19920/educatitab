@@ -1,37 +1,19 @@
 import React,{Component} from 'react';
 import {View,Text,StyleSheet,ScrollView,Image,FlatList} from 'react-native';
 import {connect} from 'react-redux';
-import {getUserTests} from '../store/actions/user_action';
-//http://www.json-generator.com/api/json/get/ccLAsEcOSq?indent=1
-
-
+import CompletedTestTableRow from './CompletedTestTableRow';
+import {loadCompletedTestData} from '../store/actions/testData_action';
 class TestScreen extends Component{
     constructor(props){
-        super()
+        super(props)
         this.state={
-            dataSource:[]
+            
+           
+           
         }
+        this.profilePdf = this.profilePdf.bind(this);
     }
-
-
-   
-    renderItem=({item})=>{
-        return(
-            <View style={styles.book}>
-                <Image source={{ uri: item.image }} style={styles.img} />
-                <View style={{flex:1,justifyContent:'center'}}>
-                <Text style={{fontSize:18,color:'green',marginBottom:15}}>{item.customerTestId}</Text>
-                <Text style={{fontSize:18,color:'green',marginBottom:15}}>{item.startDate}</Text>
-                <Text style={{fontSize:18,color:'green',marginBottom:15}}>{item.name}</Text>
-                <Text style={{fontSize:18,color:'green',marginBottom:15}}>{item.schoolName}</Text>
-                <Text style={{fontSize:18,color:'green',marginBottom:15}}>{itemstartLevel}</Text>
-                <Text>{item.author}</Text>
-                </View>
-            </View>
-        )
-        
-
-    }
+    
     static navigationOptions ={
         title:'My tests',
         headerStyle: {
@@ -51,17 +33,33 @@ class TestScreen extends Component{
             
           }
     }
+    profilePdf(customerTestId){
+        alert('pdf' + customerTestId);
+    }
+  
+    componentDidMount(){
+        this.props.loadCompletedTestData().then((res)=>{
+            console.log(res);
+        }).catch(error=>{
+           //alert(error)
+        })
+
+    }
     render(){
-        let books 
         return(
             <View style={styles.container}>
             <ScrollView style={{width:'100%'}}>
-            <FlatList data={this.state.dataSource}
-                      renderItem={this.renderItem}
-            
-            />
-                
-                </ScrollView>
+            {this.props.completedTests.map(item=>{
+            <CompletedTestTableRow 
+                name={item.name}
+                startLevel={item.startLevel}
+                niceDate={item.niceDate}
+                schoolName={item.schoolName}
+                customerTestId={item.customerTestId}
+                />
+
+            })}
+            </ScrollView>
             </View>
         )
     }
@@ -88,13 +86,13 @@ const styles = StyleSheet.create({
 })
 function mapStateToProps(state){
     return{
-        User:state.User
+        completedTests: state.testData.completedTests,
     }
 
 }
  const mapDispatchToProps=(dispatch)=>({
-    getUserTests: (sub) => {
-      return dispatch(getUserTests(sub))
+    loadCompletedTestData: () => {
+      return dispatch(loadCompletedTestData())
   
   }
   })

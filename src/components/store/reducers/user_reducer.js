@@ -3,7 +3,8 @@ import {CHECK_USER_SUCCESS,
     LOGIN_USER,
     LOGOUT_SUCCESS,
     AUTO_SIGN_IN,
-    GET_USER_TESTS
+    GET_USER_TESTS,
+    COMPLETEDTESTDATA_LOAD_SUCCESS
 } from '../types';
 const InitialState = {
     isAuthenticated: false,
