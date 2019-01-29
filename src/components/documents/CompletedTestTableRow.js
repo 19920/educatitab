@@ -19,11 +19,13 @@ export default function CompletedTestTableRow(props) {
       <View style={styles.container}>
             <ScrollView>
             <View style={styles.testpannel}>
-              <Text style={styles.text}>Test: {name}</Text>
-              <Text style={styles.text}>Startnivå: {startLevel}</Text>
-              <Text style={styles.text}>Datum: {niceDate}</Text>
-              <Text style={styles.text}>Skola: {schoolName}</Text>
-              <Text style={styles.text}>Test Id: {customerTestId}</Text>
+              <Text style={styles.text}>{niceDate},{schoolName} </Text>
+              <Text style={styles.text}>{name}</Text>
+              <View>
+              <Text style={styles.text}>Resultat:</Text>
+              <Text style={styles.text}>{startLevel}</Text>
+              </View>
+            
               <TouchableOpacity
                 style={styles.loginScreenButton}
                 onPress={()=>props.profilePdf(customerTestId)}
@@ -32,11 +34,13 @@ export default function CompletedTestTableRow(props) {
                 </TouchableOpacity>
                   </View>
                   <View style={styles.testpannel}>
-              <Text style={styles.text}>Test: {name}</Text>
-              <Text style={styles.text}>Startnivå: {startLevel}</Text>
-              <Text style={styles.text}>Datum: {niceDate}</Text>
-              <Text style={styles.text}>Skola: {schoolName}</Text>
-              <Text style={styles.text}>Test Id: {customerTestId}</Text>
+              <Text style={styles.text}>{niceDate},{schoolName} </Text>
+              <Text style={styles.text}>{name}</Text>
+              <View>
+              <Text style={styles.text}>Resultat:</Text>
+              <Text style={styles.text}>{startLevel}</Text>
+              </View>
+            
               <TouchableOpacity
                 style={styles.loginScreenButton}
                 onPress={()=>props.profilePdf(customerTestId)}
@@ -45,11 +49,13 @@ export default function CompletedTestTableRow(props) {
                 </TouchableOpacity>
                   </View>
                   <View style={styles.testpannel}>
-              <Text style={styles.text}>Test: {name}</Text>
-              <Text style={styles.text}>Startnivå: {startLevel}</Text>
-              <Text style={styles.text}>Datum: {niceDate}</Text>
-              <Text style={styles.text}>Skola: {schoolName}</Text>
-              <Text style={styles.text}>Test Id: {customerTestId}</Text>
+              <Text style={styles.text}>{niceDate},{schoolName} </Text>
+              <Text style={styles.text}>{name}</Text>
+              <View>
+              <Text style={styles.text}>Resultat:</Text>
+              <Text style={styles.text}>{startLevel}</Text>
+              </View>
+            
               <TouchableOpacity
                 style={styles.loginScreenButton}
                 onPress={()=>props.profilePdf(customerTestId)}
@@ -63,9 +69,9 @@ export default function CompletedTestTableRow(props) {
 }
 
 const styles =StyleSheet.create({
-    conatiner:{
+    container:{
             flex:1,
-            alignItems:'center',
+
             backgroundColor:'#ECEFF1'
     },
     testpannel:{
@@ -75,6 +81,7 @@ const styles =StyleSheet.create({
         borderColor:'red',
         backgroundColor:'#676767',
         margin:5,
+        borderRadius:10,
         opacity:1,
         textAlign:'center',
        
@@ -87,7 +94,8 @@ const styles =StyleSheet.create({
      loginScreenButton:{
         marginRight:40,
         marginLeft:40,
-       marginTop:10,
+        marginTop:10,
+        marginBottom:10,
         paddingTop:10,
         paddingBottom:10,
         backgroundColor:'#1E6738',
