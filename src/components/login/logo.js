@@ -1,22 +1,17 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Animated,Easing } from 'react-native';
+import { View, Text, StyleSheet,Animated,Easing,Image} from 'react-native';
+import BackImage from '../../../assets/logo.png'
 export default class Logo extends Component{
     state = {
-        educateAnim:new Animated.Value(0),
+        backImage:new Animated.Value(0),
         itAnim:new Animated.Value(0)
     }
     componentWillMount(){
         Animated.sequence([
-            Animated.timing(this.state.educateAnim,{
+            Animated.timing(this.state.backImage,{
                 toValue:1,
                 duration:1000,
-                easing:Easing.easeOutCubic
-
-            }),
-            Animated.timing(this.state.itAnim,{
-                toValue:1,
-                duration:500,
-                easing:Easing.easeOutCubic
+                
 
             }),
         ]).start(()=>{
@@ -29,24 +24,18 @@ export default class Logo extends Component{
            <View>
             <View style = {styles.logoStyles}>
                     <Animated.View style={{
-                        opacity: this.state.educateAnim,
-                        top:this.state.educateAnim.interpolate({
+                        opacity: this.state.backImage,
+                        top:this.state.backImage.interpolate({
                             inputRange:[0,1],
                             outputRange:[100,0]
                         })
                     }}>
-                        <Text style={styles.educate}>Educate</Text>
-
+                    <Image source={BackImage}
+                    style={styles.image}
+                    resizeMode={'contain'}
+                    />
                     </Animated.View>
-                    <Animated.View style = {{
-                        opacity:this.state.itAnim,
-                        top:this.state.itAnim.interpolate({
-                            inputRange:[0,1],
-                            outputRange:[100,0]
-                        })
-                    }}>
-                        <Text style={styles.it}>it</Text>
-                    </Animated.View>
+                   
             </View>
             </View>
         )
@@ -58,7 +47,8 @@ const styles = StyleSheet.create({
         flex:1,
         justifyContent:'center',
         flexDirection:'row',
-        maxHeight:30
+        maxHeight:80,
+       
     },
     educate:{
         fontSize:40,
@@ -72,6 +62,11 @@ const styles = StyleSheet.create({
         fontFamily:'Roboto-Italic',
         color:'red',
         height:50
+
+    },
+    image:{
+        width:270,
+      
 
     }
 })
