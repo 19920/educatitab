@@ -39,7 +39,6 @@ import { LogoutUser } from '../store/actions/user_action';
     removeTokens=()=>{
         const {navigation} = this.props;
         this .props.LogoutUser();
-        alert('token removed')
         navigation.navigate('login')
 
     }

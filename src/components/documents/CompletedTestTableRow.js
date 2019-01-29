@@ -71,15 +71,16 @@ export default function CompletedTestTableRow(props) {
 const styles =StyleSheet.create({
     container:{
             flex:1,
-
+            paddingTop:10,
             backgroundColor:'#ECEFF1'
     },
     testpannel:{
         flex:1,
+        
         marginBottom:10,
         borderWidth:1,
         borderColor:'red',
-        backgroundColor:'#676767',
+        backgroundColor:'rgba(103,103,103,1)',
         margin:5,
         borderRadius:10,
         opacity:1,

@@ -37,10 +37,11 @@ const styles = StyleSheet.create({
          width:300,
           height:40,
           borderWidth:2,
-          borderColor:'black',
+          borderColor:'#ADD8E6',
           backgroundColor:'white',
           color:'black',
           textAlign:'center',
+          justifyContent:'center'
           
   },
   label:{

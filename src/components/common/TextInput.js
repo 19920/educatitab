@@ -32,7 +32,10 @@ const styles = StyleSheet.create({
           borderColor:'black',
           backgroundColor:'white',
           color:'black',
-          textAlign:'center',
+          textAlign:'justify',
+          justifyContent:'center',
+          alignItems:'stretch'
+        
           
   },
   label:{

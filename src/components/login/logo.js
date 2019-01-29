@@ -45,7 +45,7 @@ export default class Logo extends Component{
                             outputRange:[100,0]
                         })
                     }}>
-                        <Text style={styles.it}>It</Text>
+                        <Text style={styles.it}>it</Text>
                     </Animated.View>
             </View>
             </View>
@@ -71,7 +71,6 @@ const styles = StyleSheet.create({
         fontSize:40,
         fontFamily:'Roboto-Italic',
         color:'red',
-        backgroundColor:'#D3D3D3',
         height:50
 
     }

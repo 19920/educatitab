@@ -100,6 +100,7 @@ class LoginForm extends Component {
                         this.setState({
                             showPasswordPanel: true,
                             showIdentifierPanel: false,
+                            showForgotPanel: true,
                             loginData: { identifier: checkUserData.userName, email: checkUserData.email, smsphone: checkUserData.phone, password: '', newPassword: '', confirmPassword: '', pin: '' },
                             loggingIn: false
                         });
@@ -118,7 +119,8 @@ class LoginForm extends Component {
                     alert(this.state.errors)
                 })
         } else {
-            this.setState({ errors: { identifier: 'Personnummer krävs.' }, loggingIn: false })
+            this.setState({ errors: { identifier: 'Personnummer krävs.' }, loggingIn: false });
+            alert('Personnummer krävs.')
         }
     }
     manageAccess=()=>{
@@ -169,6 +171,11 @@ class LoginForm extends Component {
 
     }
     resetPassword() {
+        this.setState({
+            showForgotPanel:true,
+            showIdentifierPanel:false,
+            showPasswordPanel:false
+        })
 
     }
     loginFormIsValid() {
@@ -273,7 +280,7 @@ class LoginForm extends Component {
 
             )
         }
-        else {
+        else if(showForgotPanel){
             return (
                 <View style={styles.forgotPassword}>
                     <ForgotPasswordPanel
@@ -290,6 +297,22 @@ class LoginForm extends Component {
                 </View>
 
             )
+        }
+        else{
+            return (
+                <View style={styles.identifier}>
+                    <IdentifierPanel
+                        loginData={loginData}
+                        onChangeText={value => this.onChangeText('identifier', value)}
+                        errors={errors}
+                        showpanel={showIdentifierPanel}
+                        loggingIn={loggingIn}
+                        verifyuser={this.verifyUser}
+
+                    />
+                </View>
+            )
+            
         }
     }
 

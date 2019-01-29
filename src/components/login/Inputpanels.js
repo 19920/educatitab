@@ -1,7 +1,9 @@
 import React,{Component} from 'react'
 import {View,Text,TextInput,StyleSheet,TouchableOpacity,TouchableHighlight} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import  PasswordInput  from '../common/PasswordInput';
 import { TextInputs } from '../common/TextInput';
+
 
 
 export const IdentifierPanel =(props)=>{
@@ -23,11 +25,14 @@ export const IdentifierPanel =(props)=>{
            
             />
             </View>
-            <View style={styles.buttons}>
-                <TouchableOpacity onPress={verifyuser}>
-                    <Text style={styles.textButtons}>{loggingIn ? 'Verifierar användare':'Nästa'}</Text>
+            <TouchableOpacity
+                style={styles.loginScreenButton}
+                onPress={verifyuser}
+                underlayColor='#fff'>
+             
+                    <Text style={styles.loginText}>{loggingIn ? 'Verifierar användare':'Nästa'}</Text>
                 </TouchableOpacity>
-            </View>
+           
 
         </View>
     )
@@ -57,22 +62,26 @@ export const PasswordPanel=(props)=>{
             />
             </View>
             <View style={styles.forgotButton}>
-            <TouchableHighlight onPress={resetPassword}>
-                <Text style={{color:'blue'}}>Glömt lösenord ? klicka här.</Text>
-            </TouchableHighlight>
+            <TouchableOpacity onPress={()=>resetPassword}>
+                <Text style={{color:'#ADD8E6'}}>Glömt lösenord ? klicka här.</Text>
+            </TouchableOpacity>
             </View>
             </View>
 
             <View style={styles.buttons2}>
             <TouchableHighlight style={styles.buttons21} onPress={handleHidePanel}>
-                <Text>Backa</Text>
+                <Text><Icon name='ios-arrow-back' size={24}/></Text>
             </TouchableHighlight>
-        
-                <TouchableOpacity style={styles.buttons22} onPress={login}>
-                    <Text>
-                        {loggingIn ? 'Loggar in ...':'Logga in'}
-                    </Text>
+            <TouchableOpacity
+                style={styles.loginScreenButton}
+                onPress={login}
+                underlayColor='#fff'>
+             
+                    <Text style={styles.loginText}> {loggingIn ? 'Loggar in ...':'Logga in'}</Text>
                 </TouchableOpacity>
+           
+        
+                
                 </View>
            
         </View>
@@ -172,6 +181,25 @@ const styles = StyleSheet.create({
         marginTop:5,
         fontSize:20,
         color:'white'
-    }
+    },
+    loginScreenButton:{
+        marginRight:10,
+        marginLeft:230,
+        marginTop:10,
+        marginBottom:10,
+        paddingTop:10,
+        paddingBottom:10,
+        backgroundColor:'red',
+        borderRadius:10,
+        alignItems:'center',
+        borderWidth: 1,
+        borderColor: 'black'
+      },
+      loginText:{
+          color:'white',
+          textAlign:'center',
+          paddingLeft : 10,
+          paddingRight : 10
+      }
 
 })
