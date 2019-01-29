@@ -39,7 +39,7 @@ class TestScreen extends Component{
   
     componentDidMount(){
         this.props.loadCompletedTestData().then((res)=>{
-            console.log(res);
+            alert(res);
         }).catch(error=>{
            //alert(error)
         })
@@ -49,7 +49,7 @@ class TestScreen extends Component{
         return(
             <View style={styles.container}>
             <ScrollView style={{width:'100%'}}>
-            {this.props.completedTests.map(item=>{
+            {this.props.completedTests.map((item)=>{
             <CompletedTestTableRow 
                 name={item.name}
                 startLevel={item.startLevel}
