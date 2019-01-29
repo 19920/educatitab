@@ -50,14 +50,20 @@ class TestScreen extends Component{
         
         return(
             <View style={styles.container}>
-            <ScrollView style={{width:'100%'}}>
-            {this.props.completedTests.map((item,i)=>{
+           
+            {this.props.completedTests ?
+             <ScrollView style={{width:'100%'}}>
+            { this.props.completedTests.map((item,i)=>{
                
-            return<CompletedTestTableRow testInfo={item} key={i}/>
+                return<CompletedTestTableRow testInfo={item} key={i}/>
+                
+    
+                })}
+                    </ScrollView>
             
-
-            })}
-            </ScrollView>
+            :<View><Text>Du har inga resultat än</Text></View>}
+           
+        
             </View>
         )
     }
