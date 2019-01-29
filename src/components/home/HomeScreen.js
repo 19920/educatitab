@@ -54,7 +54,7 @@ export default class HomeScreen extends Component{
                 </TouchableHighlight>
                
                     <TouchableHighlight style={styles.results} onPress={()=>this.props.navigation.navigate('mycv')}>
-                    <Text style={styles.loginButton}>Om mig-CV <Icon name='check' size={24} /></Text>
+                    <Text style={styles.loginButton}>Om mig-CV </Text>
                 </TouchableHighlight>
                
                    
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
         height:50,
         margin:5,
         alignItems:'center',
-        color:'white'
+       
 
     },
     loginButton: {

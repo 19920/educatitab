@@ -15,9 +15,9 @@ class TestScreen extends Component{
     }
     
     static navigationOptions ={
-        title:'My tests',
+        title:'Testresultat',
         headerStyle: {
-            backgroundColor: '#16a085',
+            backgroundColor: 'red',
             paddingHorizontal: 8,
             fontWeight: '300'
           },
@@ -25,6 +25,7 @@ class TestScreen extends Component{
           headerTitleStyle: {
               fontWeight: '300',
               textAlign: 'center',
+              fontSize:30,
               color:'white',
               flexGrow:1,
               alignSelf:'center',
@@ -39,24 +40,21 @@ class TestScreen extends Component{
   
     componentDidMount(){
         this.props.loadCompletedTestData().then((res)=>{
-            alert(res);
+            console.log(res)
         }).catch(error=>{
-           //alert(error)
+           console.log(error)
         })
 
     }
     render(){
+        
         return(
             <View style={styles.container}>
             <ScrollView style={{width:'100%'}}>
-            {this.props.completedTests.map((item)=>{
-            <CompletedTestTableRow 
-                name={item.name}
-                startLevel={item.startLevel}
-                niceDate={item.niceDate}
-                schoolName={item.schoolName}
-                customerTestId={item.customerTestId}
-                />
+            {this.props.completedTests.map((item,i)=>{
+               
+            return<CompletedTestTableRow testInfo={item} key={i}/>
+            
 
             })}
             </ScrollView>
