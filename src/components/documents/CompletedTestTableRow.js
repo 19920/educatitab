@@ -31,6 +31,32 @@ export default function CompletedTestTableRow(props) {
                 <Text style={styles.loginText}>TestProfil</Text>
                 </TouchableOpacity>
                   </View>
+                  <View style={styles.testpannel}>
+              <Text style={styles.text}>Test: {name}</Text>
+              <Text style={styles.text}>Startnivå: {startLevel}</Text>
+              <Text style={styles.text}>Datum: {niceDate}</Text>
+              <Text style={styles.text}>Skola: {schoolName}</Text>
+              <Text style={styles.text}>Test Id: {customerTestId}</Text>
+              <TouchableOpacity
+                style={styles.loginScreenButton}
+                onPress={()=>props.profilePdf(customerTestId)}
+                underlayColor='#fff'>
+                <Text style={styles.loginText}>TestProfil</Text>
+                </TouchableOpacity>
+                  </View>
+                  <View style={styles.testpannel}>
+              <Text style={styles.text}>Test: {name}</Text>
+              <Text style={styles.text}>Startnivå: {startLevel}</Text>
+              <Text style={styles.text}>Datum: {niceDate}</Text>
+              <Text style={styles.text}>Skola: {schoolName}</Text>
+              <Text style={styles.text}>Test Id: {customerTestId}</Text>
+              <TouchableOpacity
+                style={styles.loginScreenButton}
+                onPress={()=>props.profilePdf(customerTestId)}
+                underlayColor='#fff'>
+                <Text style={styles.loginText}>TestProfil</Text>
+                </TouchableOpacity>
+                  </View>
               </ScrollView> 
       </View>
   )
