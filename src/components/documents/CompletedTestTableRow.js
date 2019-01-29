@@ -33,7 +33,7 @@ export default function CompletedTestTableRow(props) {
                 <Text style={styles.loginText}>TestProfil</Text>
                 </TouchableOpacity>
                   </View>
-                  <View style={styles.testpannel}>
+            <View style={styles.testpannel}>
               <Text style={styles.text}>{niceDate},{schoolName} </Text>
               <Text style={styles.text}>{name}</Text>
               <View>
@@ -78,10 +78,10 @@ const styles =StyleSheet.create({
         flex:1,
         
         marginBottom:10,
+        marginLeft:9,
+        marginRight:9,
         borderWidth:1,
-        borderColor:'red',
         backgroundColor:'rgba(103,103,103,1)',
-        margin:5,
         borderRadius:10,
         opacity:1,
         textAlign:'center',
@@ -89,7 +89,9 @@ const styles =StyleSheet.create({
 
      },
      text:{
-        color:'white'
+        color:'white',
+        marginLeft:9,
+        marginRight:9,
 
      },
      loginScreenButton:{
