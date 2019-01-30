@@ -1,54 +1,20 @@
 import React,{Component} from 'react';
-import {View,Text,StyleSheet,ScrollView,FlatList,Image,TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import {View,Text,StyleSheet,ScrollView,FlatList,Image,TouchableOpacity,TouchableHighlight} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Icons from 'react-native-vector-icons/AntDesign';
 
 
 export default class CertificateScreen extends Component{
     constructor(props){
         super()
         this.state={
-            dataSource:[]
+            certificates:['Betyg Grundskolan 9:an','Intygg arbete Blixtin','Intyg praktik Your voice']
         }
-        this.verifyuser = this.verifyuser.bind(this);
+     
     }
-    componentDidMount(){
-        fetch('https://www.json-generator.com/api/json/get/ccLAsEcOSq?indent=1')
-        .then((response)=>response.json())
-        .then((response)=>{
-           this.setState({
-               dataSource:response.book_array
-           })
-        })
-        .catch((error)=>{
-            console.log(error)
-        })
-    }
-    verifyuser(){
-
-    }
-    renderItem=({item,i})=>{
-        return(
-            <View style={styles.book} key={i}>
-                <Image source={{ uri: item.image }} style={styles.img} />
-                <View style={{flex:1,justifyContent:'center'}}>
-                <Text style={{fontSize:18,color:'green',marginBottom:15}}>{item.book_title}</Text>
-                <Text>{item.author}</Text>
-                </View>
-                <TouchableOpacity
-                style={styles.loginScreenButton}
-                onPress={this.verifyuser}
-                underlayColor='#fff'>
-             
-                    <Text style={styles.loginText}><Icon name='ios-redo' size={24}/></Text>
-                </TouchableOpacity>
-
-            </View>
-        )
-        
-
-    }
+    
     static navigationOptions ={
-        title:'Betygg',
+        title:'Betygg & Dokument',
         headerStyle: {
             backgroundColor: 'red',
             fontWeight: '100'
@@ -58,44 +24,102 @@ export default class CertificateScreen extends Component{
               fontWeight: '300',
               textAlign: 'center',
               color:'white',
-              fontSize:30,
+              fontSize:20,
               flexGrow:1,
             
           }
     }
     render(){
-         
+         const {certificates} = this.state;
         return(
             <View style={styles.container}>
             <ScrollView style={{width:'100%'}}>
-            <FlatList 
-            data={this.state.dataSource}
-            renderItem={this.renderItem}
-            
-            />
-                
+             {certificates.map((item,i)=>{
+                 return(
+                     <View >
+                         <View key ={i} style={styles.testpannel}>
+                     <Icon name='file-pdf-o' size={24} style={{color:'white'}}/>
+                         <Text style={styles.text}>{item}</Text>
+                         <TouchableHighlight 
+                         onPress={()=>alert('are u sure?')}
+                         style={styles.icons}>
+                         <Icons name='delete' size={20} style={{color:'white'}}/>
+                         </TouchableHighlight>
+                         <TouchableHighlight 
+                         onPress={()=>alert('do u really want to share this?')}
+                         style={styles.icons}>
+                         <Icon name='share' size={20} style={{color:'white'}}/>
+                         </TouchableHighlight>
+                        
+                     </View>
+                      <View key ={i} style={styles.testpannel}>
+                     <Icon name='file-pdf-o' size={24} style={{color:'white'}}/>
+                         <Text style={styles.text}>{item}</Text>
+                         <TouchableHighlight style={styles.icons}>
+                         <Icons name='delete' size={20} style={{color:'white'}}/>
+                         </TouchableHighlight>
+                         <TouchableHighlight style={styles.icons}>
+                         <Icon name='share' size={20} style={{color:'white'}}/>
+                         </TouchableHighlight>
+                        
+                     </View>
+                     
+                     <View key ={i} style={styles.testpannel}>
+                     <Icon name='file-pdf-o' size={24} style={{color:'white'}}/>
+                         <Text style={styles.text}>{item}</Text>
+                         <TouchableHighlight style={styles.icons}>
+                         <Icons name='delete' size={20} style={{color:'white'}}/>
+                         </TouchableHighlight>
+                         <TouchableHighlight style={styles.icons}>
+                         <Icon name='share' size={20} style={{color:'white'}}/>
+                         </TouchableHighlight>
+                        
+                     </View>
+
+                     </View>
+                    
+                 )
+             })}
+        
                 </ScrollView>
             </View>
         )
     }
 
 }
+
 const styles = StyleSheet.create({
     container:{
         flex:1,
      },
-     book:{
+     testpannel:{
         flex:1,
-        flexDirection:'row',
+        
         marginBottom:10,
+        paddingTop:10,
+        height:50,
+        marginLeft:9,
+        marginRight:9,
         borderWidth:1,
-        borderColor:'red'
+        backgroundColor:'rgba(103,103,103,1)',
+        borderRadius:10,
+        opacity:1,
+        textAlign:'center',
+        marginTop:10,
+        justifyContent:'center',
+        flexDirection:'row'
+       
 
      },
-     img:{
-        width:80,
-        height:80,
-        margin:5
+     text:{
+        color:'white',
+        marginLeft:9,
+        marginRight:9,
+        textAlign:'center',
+
+     },
+     icons:{
+         paddingLeft:10
      }
 
 })

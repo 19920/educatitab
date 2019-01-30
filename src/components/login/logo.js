@@ -4,7 +4,6 @@ import BackImage from '../../../assets/logo.png'
 export default class Logo extends Component{
     state = {
         backImage:new Animated.Value(0),
-        itAnim:new Animated.Value(0)
     }
     componentWillMount(){
         Animated.sequence([
@@ -49,20 +48,6 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         maxHeight:80,
        
-    },
-    educate:{
-        fontSize:40,
-        fontFamily:'Roboto-Italic',
-        color:'black',
-        height:50
-
-    },
-    it:{
-        fontSize:40,
-        fontFamily:'Roboto-Italic',
-        color:'red',
-        height:50
-
     },
     image:{
         width:270,
