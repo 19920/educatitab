@@ -94,9 +94,11 @@ class LoginForm extends Component {
         if (loginData.identifier.value !== '') {
             this.props.checkUser(loginData.identifier.value).then(
                 (response) => {
-                    //alert(JSON.stringify(response))
+                    console.log(response)
                     if (response.payload.hasPass) {
+                        
                         const checkUserData = response.payload;
+                        
                         this.setState({
                             showPasswordPanel: true,
                             showIdentifierPanel: false,
@@ -111,16 +113,13 @@ class LoginForm extends Component {
                             loggingIn: false
                         })
                     }
-                }, (err) => {
-                    toastr.error('Fel användarnamn');
-                    this.setState({ errors: { identifier: 'Personnumret finns ej . Kontakta skolan.' }, loggingIn: false })
                 }).catch(error=>{
                     this.setState({errors:'Personnumret finns ej . Kontakta skolan.',loggingIn:false})
                     alert(this.state.errors)
                 })
         } else {
-            this.setState({ errors: { identifier: 'Personnummer krävs.' }, loggingIn: false });
-            alert('Personnummer krävs.')
+            this.setState({loggingIn: false });
+            alert('Personnummer krävs.' )
         }
     }
     manageAccess=()=>{
@@ -137,28 +136,35 @@ class LoginForm extends Component {
 
     }
     login() {
-        const {navigation} = this.props
+        const {navigation} = this.props;
+        const {loginData} = this.state;
         if (!this.loginFormIsValid()) {
             return (
                 alert('some errors')
             );
         }else{
             this.setState({ loggingIn: true, errors: {} })
-            this.props.loginUser(this.state.loginData).then((response) => {
-               
-                navigation('home');
+            if(loginData.password == ''){
             
-                
+            this.props.loginUser(loginData).then((response) => {
+                //if(response.password != ''){
+                //this.manageAccess();
+               //alert(response.payload);
+               navigation('home');
+
+                //}else{
+                    //alert('Lösenord krävs')
+                //}
                 
                
     
-            }, (error) => {
-                alert(error);
-                if (error.response) {
-                    
-                }
+            }).catch(error=>{
+                console.log(error)
+
+            })
+        }else{
+                alert('Lösenord krävs');
             }
-            )
     
 
         }
@@ -252,12 +258,14 @@ class LoginForm extends Component {
                     <IdentifierPanel
                         loginData={loginData}
                         onChangeText={value => this.onChangeText('identifier', value)}
+                        value={this.state.loginData.identifier.value}
                         errors={errors}
                         showpanel={showIdentifierPanel}
                         loggingIn={loggingIn}
                         verifyuser={this.verifyUser}
 
                     />
+                   
                 </View>
             )
 
@@ -269,6 +277,7 @@ class LoginForm extends Component {
                     <PasswordPanel
                         loginData={loginData}
                         onChangeText={value => this.onChangeText('password', value)}
+                        value={this.state.loginData.password.value}
                         errors={errors}
                         showpanel={showPasswordPanel}
                         handleHidePanel={this.hidePasswordPanel}

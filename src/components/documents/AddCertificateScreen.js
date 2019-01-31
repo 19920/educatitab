@@ -8,6 +8,7 @@ export default class AddCertificateScreen extends Component {
         super(props)
         this.state = {
           text: '',
+          isVisisble:false,
           filePath: {},
       };
  
@@ -56,6 +57,7 @@ export default class AddCertificateScreen extends Component {
         // let source = { uri: 'data:image/jpeg;base64,' + response.data };
         this.setState({
           filePath: source,
+          isVisisble:true
         });
       }
     });
@@ -80,8 +82,14 @@ export default class AddCertificateScreen extends Component {
           <Text style={styles.loginText}>Ladda up filen</Text>
         </TouchableOpacity>
         </View>
+        {this.state.isVisisble?
+        <View style={{paddingTop:20}}>
+     <Image source={this.state.filePath} style={styles.uploadAvatar} />
+     </View>
+     :null
+      }
      
-        <Image source={this.state.filePath} style={styles.uploadAvatar} />
+        
       
         <Text>{this.state.text.value}</Text>
         <TouchableHighlight 
