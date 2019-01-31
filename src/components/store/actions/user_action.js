@@ -51,14 +51,18 @@ export function LoginUserSuccess(response){
 
 export function loginUser(data){
     return function(dispatch){
-        return axios.post(URL + 'Login',{  identifier: data.identifier.value,
-            password: data.password.value
+        return axios.post(URL + 'Login',{
+            identifier: data.identifier,
+            password: data.password
 
         }).then(response=>{
             //console.log(response);
             const {token} = response.data;
        
-            AsyncStorage.setItem(LocalStorekeys.JWTTOKEN, token).then(()=>{     
+            AsyncStorage.setItem(LocalStorekeys.JWTTOKEN, token).then(()=>{
+                
+                
+                 
             setAuthorizationToken(token);
             let decodeToken = jwtDecode(token);
             //alert(JSON.stringify(decodeToken))
