@@ -37,51 +37,37 @@ export default class CertificateScreen extends Component{
              {certificates.map((item,i)=>{
                  return(
                      <View >
-                         <View key ={i} style={styles.testpannel}>
-                     <Icon name='file-pdf-o' size={24} style={{color:'white'}}/>
+                         <View style={styles.testpannel}>
+                         <Icon name='file-pdf-o' size={24} style={{color:'white'}}/>
+                         <View key ={i} style={styles.testpannel2}>
                          <Text style={styles.text}>{item}</Text>
+                         <View style={{flexDirection:'row'}}>
                          <TouchableHighlight 
                          onPress={()=>alert('are u sure?')}
                          style={styles.icons}>
-                         <Icons name='delete' size={20} style={{color:'white'}}/>
+                         <Icons name='delete' size={20} style={{color:'white',textAlign:'right'}}/>
                          </TouchableHighlight>
                          <TouchableHighlight 
                          onPress={()=>alert('do u really want to share this?')}
                          style={styles.icons}>
-                         <Icon name='share' size={20} style={{color:'white'}}/>
+                         <Icon name='share' size={20} style={{color:'white',textAlign:'right'}}/>
                          </TouchableHighlight>
-                        
+                         </View>
                      </View>
-                      <View key ={i} style={styles.testpannel}>
-                     <Icon name='file-pdf-o' size={24} style={{color:'white'}}/>
-                         <Text style={styles.text}>{item}</Text>
-                         <TouchableHighlight style={styles.icons}>
-                         <Icons name='delete' size={20} style={{color:'white'}}/>
-                         </TouchableHighlight>
-                         <TouchableHighlight style={styles.icons}>
-                         <Icon name='share' size={20} style={{color:'white'}}/>
-                         </TouchableHighlight>
-                        
                      </View>
-                     
-                     <View key ={i} style={styles.testpannel}>
-                     <Icon name='file-pdf-o' size={24} style={{color:'white'}}/>
-                         <Text style={styles.text}>{item}</Text>
-                         <TouchableHighlight style={styles.icons}>
-                         <Icons name='delete' size={20} style={{color:'white'}}/>
-                         </TouchableHighlight>
-                         <TouchableHighlight style={styles.icons}>
-                         <Icon name='share' size={20} style={{color:'white'}}/>
-                         </TouchableHighlight>
-                        
-                     </View>
-
+                    
+                    
                      </View>
                     
                  )
              })}
         
                 </ScrollView>
+                <TouchableOpacity 
+                onPress={()=>this.props.navigation.navigate('addCertificate')}
+                style={styles.addButton}>
+                    <Text style={styles.addButtonText}>+</Text>
+                </TouchableOpacity>
             </View>
         )
     }
@@ -94,20 +80,22 @@ const styles = StyleSheet.create({
      },
      testpannel:{
         flex:1,
-        
-        marginBottom:10,
-        paddingTop:10,
-        height:50,
-        marginLeft:9,
-        marginRight:9,
         borderWidth:1,
         backgroundColor:'rgba(103,103,103,1)',
         borderRadius:10,
         opacity:1,
-        textAlign:'center',
+        margin:10,
+        flexDirection:'column'
+       
+
+     },
+     testpannel2:{
+        flex:1,
+        flexDirection:'row',
         marginTop:10,
-        justifyContent:'center',
-        flexDirection:'row'
+        
+     
+       
        
 
      },
@@ -120,6 +108,23 @@ const styles = StyleSheet.create({
      },
      icons:{
          paddingLeft:10
+     },
+     addButton:{
+         position:'absolute',
+         zIndex:11,
+         right:20,
+         bottom:40,
+         backgroundColor:'red',
+         width:50,
+         height:50,
+         borderRadius:50,
+         alignItems:'center',
+         justifyContent:'center',
+         elevation: 5
+     },
+     addButtonText:{
+         color:'#fff',
+         fontSize:24
      }
 
 })

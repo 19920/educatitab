@@ -6,12 +6,13 @@ import {createStackNavigator,createDrawerNavigator,
   createBottomTabNavigator,createSwitchNavigator,
   DrawerItems,
 } from 'react-navigation';
-import {Platform, Dimensions,StyleSheet,SafeAreaView,ScrollView, Button, View,TouchableOpacity,StatusBar} from 'react-native';
+import {Platform, Dimensions,StyleSheet,SafeAreaView,ScrollView, Button, View,TouchableOpacity,StatusBar,Image} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './src/components/home/HomeScreen';
 import LoginScreen from './src/components/login/LoginScreen';
 import LoginForm from './src/components/login/loginForm';
 import DiplomaScreen from './src/components/documents/DiplomaScreen';
+import AddCertificateScreen from './src/components/documents/AddCertificateScreen';
 import CertificateScreen from './src/components/documents/CertificateScreen';
 import TestScreen from './src/components/documents/Test';
 import ProfileScreen from './src/components/profile/ProfileScreen';
@@ -62,10 +63,11 @@ const ProfileNav = createStackNavigator({
 const myTestsNav = createStackNavigator({
   home:{
     screen:HomeScreen,
-    title:'Home'
+      
   },
   test:{
-    screen:TestScreen
+    screen:TestScreen,
+   
   },
   diploma:{
     screen:DiplomaScreen
@@ -73,6 +75,9 @@ const myTestsNav = createStackNavigator({
   certificate:{
     screen:CertificateScreen
   },
+  addCertificate:{
+    screen:AddCertificateScreen
+  }
    
  
    
@@ -105,11 +110,18 @@ const AppStackNavigator = createStackNavigator({
   AppTabNavigator:{
     screen:AppTabNavigator,
     navigationOptions:({navigation})=>({
-      title: 'EducateIt',
+      headerStyle:{
+        backgroundColor:'rgba(103,103,103,1)',
+        opacity:1
+
+      },
+      headerTitle: (
+        <Image source={require('./assets/logo.png')} style={{width:'100%',height:'100%'}}/>
+    ),
       headerLeft:(
         <TouchableOpacity onPress={()=>navigation.toggleDrawer()}>
         <View style={{paddingHorizontal:10}}>
-        <Icon name='md-menu' size={24} />
+        <Icon name='md-menu' size={24} style={{color:'white'}}/>
         </View>
         </TouchableOpacity>
 

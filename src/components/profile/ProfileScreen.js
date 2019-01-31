@@ -17,6 +17,10 @@ import { LogoutUser } from '../store/actions/user_action';
 
     }
     static navigationOptions ={
+        header: null
+    }
+    
+    /*static navigationOptions ={
         title:'Profile',
         headerStyle: {
             backgroundColor: '#16a085',
@@ -35,7 +39,7 @@ import { LogoutUser } from '../store/actions/user_action';
             
           }
         
-    }
+    } */
     removeTokens=()=>{
         const {navigation} = this.props;
         this .props.LogoutUser();
@@ -52,7 +56,7 @@ import { LogoutUser } from '../store/actions/user_action';
     render(){
        
         return(
-            <View>
+            <View style={styles.container}>
                 <TouchableHighlight style={styles.results} onPress={this.removeTokens}>
            
            <Text style={styles.loginButton}>logout </Text>
@@ -65,12 +69,11 @@ import { LogoutUser } from '../store/actions/user_action';
 const styles = StyleSheet.create({
     results:{
         backgroundColor:'red',
-      
         width:'100%',
         height:50,
-        margin:5,
+        margin:20,
         alignItems:'center',
-        color:'white'
+        
 
     },
     loginButton: {
@@ -89,20 +92,7 @@ const styles = StyleSheet.create({
       
 
     },
-    title:{
-        backgroundColor:'#676767',
-        width:'100%',
-        height:169,
-       
-    },
-    img:{
-        width:10,
-        height:100
-        
-    },
-   test:{
-
-   }
+    
    
 })
 function mapStateToProps(state){

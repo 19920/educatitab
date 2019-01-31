@@ -3,6 +3,7 @@ import {View,Text,StyleSheet,ScrollView,Image,FlatList} from 'react-native';
 import {connect} from 'react-redux';
 import CompletedTestTableRow from './CompletedTestTableRow';
 import {loadCompletedTestData} from '../store/actions/testData_action';
+import { Icon } from 'native-base';
 class TestScreen extends Component{
     constructor(props){
         super(props)
@@ -16,11 +17,13 @@ class TestScreen extends Component{
     
     static navigationOptions ={
         title:'Testresultat',
+        headerBackTitle:'Home',
         headerStyle: {
             backgroundColor: 'red',
             paddingHorizontal: 8,
             fontWeight: '300'
           },
+         
   
           headerTitleStyle: {
               fontWeight: '300',
@@ -32,7 +35,8 @@ class TestScreen extends Component{
               alignItems:'center'
             
             
-          }
+          },
+          
     }
     profilePdf(customerTestId){
         alert('pdf' + customerTestId);

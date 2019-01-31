@@ -92,8 +92,11 @@ class LoginForm extends Component {
         const { loginData } = this.state;
         this.setState({ loggingIn: true });
         if (loginData.identifier.value !== '') {
+           
             this.props.checkUser(loginData.identifier.value).then(
+           
                 (response) => {
+                    console.log(response.payload.hasPass)
                     //alert(JSON.stringify(response))
                     if (response.payload.hasPass) {
                         const checkUserData = response.payload;
@@ -145,9 +148,16 @@ class LoginForm extends Component {
         }else{
             this.setState({ loggingIn: true, errors: {} })
             this.props.loginUser(this.state.loginData).then((response) => {
+                
+                //if(response.password !== ''){
                 //this.manageAccess();
-               //alert(response.payload);
+              console.log(response.payload);
                navigation('home');
+
+               // }else{
+                    //alert('Lösenord krävs')
+                //}
+                
                
     
             }, (error) => {
