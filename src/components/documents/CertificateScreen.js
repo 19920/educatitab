@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, Image, TouchableOpacity, TouchableHighlight,TextInput} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList, Image, TouchableOpacity, TouchableHighlight, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/AntDesign';
 import Modal from "react-native-modal";
 import ImagePicker from 'react-native-image-picker';
+import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
+import DocumentScanner from 'react-native-document-scanner';
+
 
 
 export default class CertificateScreen extends Component {
@@ -12,9 +15,14 @@ export default class CertificateScreen extends Component {
         this.state = {
             certificates: ['Betyg Grundskolan 9:an', 'Intygg arbete Blixtin', 'Intyg praktik Your voice'],
             isVisisble: false,
+            isAttachedVisible:false,
             text: '',
             isModalVisible: false,
             filePath: {},
+            fileUri: '',
+            fileType: '',
+            fileName: '',
+            fileSize: '',
         }
 
     }
@@ -36,20 +44,17 @@ export default class CertificateScreen extends Component {
         }
     }
     toggleModal = () =>
-        this.setState({ isModalVisible: !this.state.isVisisble ,isVisible:true});
+        this.setState({ isModalVisible: !this.state.isVisisble, isVisible: true });
 
     chooseFile = () => {
         var options = {
             title: 'Select Image',
-            customButtons: [
-                { name: 'customOptionKey', title: 'Choose Photo from Custom Option' },
-            ],
             storageOptions: {
                 skipBackup: true,
                 path: 'images',
             },
         };
-        ImagePicker.showImagePicker(options, response => {
+        ImagePicker.launchCamera(options, response => {
             console.log('Response = ', response);
 
             if (response.didCancel) {
@@ -71,21 +76,60 @@ export default class CertificateScreen extends Component {
             }
         });
     };
+    handleChange() {
+        //Opening Document Picker
+        DocumentPicker.show(
+            {
+                filetype: [DocumentPickerUtil.allFiles()],
+                //All type of Files DocumentPickerUtil.allFiles()
+                //Only PDF DocumentPickerUtil.pdf()
+                //Audio DocumentPickerUtil.audio()
+                //Plain Text DocumentPickerUtil.plainText()
+            },
+            (error, res) => {
+                this.setState({ fileUri: res.uri });
+                this.setState({ fileType: res.type });
+                this.setState({ fileName: res.fileName });
+                this.setState({ fileSize: res.fileSize });
+
+                console.log('res : ' + JSON.stringify(res));
+                console.log('URI : ' + res.uri);
+                console.log('Type : ' + res.type);
+                console.log('File Name : ' + res.fileName);
+                console.log('File Size : ' + res.fileSize);
+            }
+        );
+        this.setState({isAttachedVisible:true})
+    }
+    allImages = () => {
+        const { isModalVisible, isVisible, text, fileName, filePath, fileUri, fileType } = this.state;
+        if (isVisible) {
+            return (
+                <View style={{ paddingTop: 20, flexDirection: 'row' }}>
+                    <Image source={this.state.filePath} style={styles.uploadAvatar} />
+                </View>
+            )
+
+        } else if (isAttachedVisible) {
+            return (
+                <View style={{ paddingTop: 20, flexDirection: 'row' }}>
+                    <Text style={styles.text}>
+                        {this.state.fileName ? 'File Name\n' + this.state.fileName : ''}
+                    </Text>
+                </View>
+            )
+
+        }
+    }
     render() {
         const { certificates } = this.state;
         return (
             <View style={styles.container}>
                 <ScrollView style={{ width: '100%' }}>
                     <View style={styles.image1}>
-                        {this.state.isVisisble ?
-                            <View style={{ paddingTop: 20, flexDirection: 'row' }}>
-                                <Image source={this.state.filePath} style={styles.uploadAvatar} />
-                                <Text>{this.state.text}</Text>
-                            </View>
-                            : null
-                        }
+                        {this.allImages}
                     </View>
-                    
+
                     {certificates.map((item, i) => {
                         return (
                             <View >
@@ -93,7 +137,7 @@ export default class CertificateScreen extends Component {
                                 <View style={styles.testpannel}>
                                     <Icon name='file-pdf-o' size={24} style={{ color: 'white' }} />
                                     <View key={i} style={styles.testpannel2}>
-                                        
+
                                         <Text style={styles.text}>{item}</Text>
                                         <View style={{ flexDirection: 'row' }}>
                                             <TouchableHighlight
@@ -109,7 +153,7 @@ export default class CertificateScreen extends Component {
                                         </View>
                                     </View>
                                 </View>
-                                
+
 
                             </View>
 
@@ -118,33 +162,32 @@ export default class CertificateScreen extends Component {
 
                 </ScrollView>
                 <TouchableOpacity
-                //onPress = {()=>this.props.navigation.navigate('addCertificate')}
+                    //onPress = {()=>this.props.navigation.navigate('addCertificate')}
                     onPress={this.toggleModal}
                     style={styles.addButton}>
                     <Text style={styles.addButtonText}>+</Text>
                 </TouchableOpacity>
 
-                <Modal isVisible={this.state.isModalVisible} >
-                                       <View style={styles.modal}>
-                                       <Text style={{color:'black'}}>Titel</Text>
-                                        <View style={styles.main}>
-                                            <TextInput
-                                                style={styles.textInput}
-                                                placeholder='title'
-                                                placeholderTextColor='white'
-                                                underlineColorAndroid='transparent'
-                                                onChangeText={(text) => this.setState({ text })}>
-                                            </TextInput>
+                <Modal isVisible={this.state.isModalVisible}>
+                    <View style={styles.modal}>
+                        <View style={styles.main}>
+                            <TouchableOpacity
+                                style={styles.loginScreenButton}
+                                onPress={this.handleChange.bind(this)}>
+                                <Text style={styles.loginText}>Add Attachment</Text>
+                            </TouchableOpacity>
 
-                                            <TouchableOpacity
-                                                style={styles.loginScreenButton}
-                                                onPress={this.chooseFile}>
-                                                <Text style={styles.loginText}>Ladda up filen</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                        </View> 
-                                  
-                                </Modal>
+                            <TouchableOpacity
+                                style={styles.loginScreenButton}
+                                onPress={this.chooseFile}>
+                                <Text style={styles.loginText}>Ladda up bilder</Text>
+                            </TouchableOpacity>
+
+
+                        </View>
+                    </View>
+
+                </Modal>
             </View>
         )
     }
@@ -203,58 +246,58 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 24
     },
-    main:{
-        flexDirection:'row',
-        margin:10
-      },
-      textInput:{
-        alignSelf:'stretch',
-        color:'black',
-        width:200,
-        backgroundColor:'white',
-        borderWidth:2,
-        borderColor:'black'
-      },
-      loginScreenButton:{
-        marginRight:10,
-        marginLeft:10,
-        paddingTop:10,
-        paddingBottom:10,
-        backgroundColor:'#1E6738',
-        borderRadius:10,
+    main: {
+        flexDirection: 'row',
+        margin: 10
+    },
+    textInput: {
+        alignSelf: 'stretch',
+        color: 'black',
+        width: 200,
+        backgroundColor: 'white',
+        borderWidth: 2,
+        borderColor: 'black'
+    },
+    loginScreenButton: {
+        marginRight: 10,
+        marginLeft: 10,
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: '#1E6738',
+        borderRadius: 10,
         borderWidth: 1,
         borderColor: '#fff'
-      },
-      loginScreenButton2:{
-        marginRight:40,
-        marginLeft:40,
-        marginTop:10,
-        marginBottom:10,
-        paddingTop:10,
-        paddingBottom:10,
-        backgroundColor:'#1E6738',
-        borderRadius:10,
+    },
+    loginScreenButton2: {
+        marginRight: 40,
+        marginLeft: 40,
+        marginTop: 10,
+        marginBottom: 10,
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: '#1E6738',
+        borderRadius: 10,
         borderWidth: 1,
         borderColor: '#fff'
-      },
-      loginText:{
-          color:'#fff',
-          textAlign:'center',
-          paddingLeft : 10,
-          paddingRight : 10
-      },
-      uploadAvatar:{
-        width:50,
-        height:50
-      },
-      modal:{
-        justifyContent:'center',
-          borderColor:'black',
-          borderWidth:1,
-          height:80,
-          width:'100%',
-          backgroundColor:'white',
+    },
+    loginText: {
+        color: '#fff',
+        textAlign: 'center',
+        paddingLeft: 10,
+        paddingRight: 10
+    },
+    uploadAvatar: {
+        width: 50,
+        height: 50
+    },
+    modal: {
+        justifyContent: 'center',
+        borderColor: 'black',
+        borderWidth: 1,
+        height: 80,
+        width: '100%',
+        backgroundColor: 'white',
 
-      }
+    }
 
 })
