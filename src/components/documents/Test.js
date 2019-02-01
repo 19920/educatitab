@@ -19,7 +19,7 @@ class TestScreen extends Component{
         title:'Testresultat',
         headerBackTitle:'Home',
         headerStyle: {
-            backgroundColor: 'red',
+            backgroundColor: '#E53128',
             paddingHorizontal: 8,
             fontWeight: '300'
           },
