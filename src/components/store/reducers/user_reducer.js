@@ -4,7 +4,8 @@ import {CHECK_USER_SUCCESS,
     LOGOUT_SUCCESS,
     AUTO_SIGN_IN,
     GET_USER_TESTS,
-    COMPLETEDTESTDATA_LOAD_SUCCESS
+    COMPLETEDTESTDATA_LOAD_SUCCESS,
+    PASSWORDRESET_SUCCESS
 } from '../types';
 const InitialState = {
     isAuthenticated: false,

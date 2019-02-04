@@ -18,7 +18,7 @@ export const IdentifierPanel =(props)=>{
             key='identifier' 
             label='Personnummer' 
             placeholder = 'yymmdd-xxxx' 
-            value={loginData.identifier.value}
+            value={loginData.identifier}
             onChangeText={onChangeText}
             error={errors.identifier}
             autofocus={showPanel}
@@ -52,7 +52,7 @@ export const PasswordPanel=(props)=>{
             name='password'
             key='password'
             label='Lösenord'
-            value={loginData.password.value}
+            value={loginData.password}
             onChangeText={onChangeText}
             error={errors.password}
             autofocus={loginType === 1}
@@ -62,7 +62,7 @@ export const PasswordPanel=(props)=>{
             />
             </View>
             <View style={styles.forgotButton}>
-            <TouchableOpacity onPress={()=>resetPassword}>
+            <TouchableOpacity onPress={resetPassword}>
                 <Text style={{color:'#ADD8E6'}}>Glömt lösenord ? klicka här.</Text>
             </TouchableOpacity>
             </View>
@@ -91,15 +91,17 @@ export const PasswordPanel=(props)=>{
 export const ForgotPasswordPanel = (props) =>{
     const {loginData,onChangeText,errors,showPanel,loggingIn,value,handleHidePanel,sendNewPass,showForgotPanel} = props;
     return(
-      
-        <View>
+        <View style={styles.container2}>
+        <View style={styles.title}>
+        <Text style={styles.loggin}>Logga in</Text>
+        <View style = {styles.inputs}>
             <PasswordInput 
             name='newPassword'
             key='newPassword'
             label='Nytt lösenord'
-            value={loginData.newPassword.value}
+            value={loginData.newPassword}
             onChangeText={onChangeText}
-            error={errors}
+            error={errors.NewPassword}
             autofocus={showForgotPanel}
 
             />
@@ -120,14 +122,16 @@ export const ForgotPasswordPanel = (props) =>{
              onChangeText={onChangeText}
              error={errors}
              />
-             <View>
-                 <TouchableHighlight onPress={handleHidePanel}>
-                     <Text>handleHidePanel</Text>
-                 </TouchableHighlight>
+             <View style={styles.buttons2}>
+            <TouchableHighlight style={styles.buttons21} onPress={handleHidePanel}>
+                <Text><Icon name='ios-arrow-back' size={24}/></Text>
+            </TouchableHighlight>
                  <TouchableHighlight onPress={sendNewPass}>
                      <Text>{loggingIn ? 'loggar in ...':'spara och logga in'}</Text>
                  </TouchableHighlight>
              </View>
+        </View>
+        </View>
         </View>
     )
 
@@ -137,6 +141,12 @@ const styles = StyleSheet.create({
         flexDirection:'column',
         backgroundColor:'white',
         height:250
+
+    },
+    container2:{
+        flexDirection:'column',
+        backgroundColor:'white',
+        height:350
 
     },
     inputs:{

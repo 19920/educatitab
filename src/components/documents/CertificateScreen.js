@@ -76,11 +76,41 @@ export default class CertificateScreen extends Component {
             }
         });
     };
+    libraryPicker=()=>{
+        var options = {
+            title: 'Select Image',
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+        };
+        ImagePicker.launchImageLibrary(options, (response) => {
+            console.log('Response = ', response);
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+                alert(response.customButton);
+            } else {
+                let source = response;
+                // You can also display the image using data:
+                // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+                this.setState({
+                    filePath: source,
+                    isVisisble: true,
+                    isModalVisible: false
+                });
+            }
+        });
+    }
     handleChange() {
         //Opening Document Picker
         DocumentPicker.show(
             {
-                filetype: [DocumentPickerUtil.allFiles()],
+                filetype: [DocumentPickerUtil.images()],
                 //All type of Files DocumentPickerUtil.allFiles()
                 //Only PDF DocumentPickerUtil.pdf()
                 //Audio DocumentPickerUtil.audio()
@@ -99,10 +129,13 @@ export default class CertificateScreen extends Component {
                 console.log('File Size : ' + res.fileSize);
             }
         );
-        this.setState({isAttachedVisible:true})
+        this.setState({
+            isAttachedVisible:true,
+            isModalVisible: false
+        })
     }
     allImages = () => {
-        const { isModalVisible, isVisible, text, fileName, filePath, fileUri, fileType } = this.state;
+        const { isModalVisible, isVisible, text, fileName, filePath, fileUri, fileType,isAttachedVisible } = this.state;
         if (isVisible) {
             return (
                 <View style={{ paddingTop: 20, flexDirection: 'row' }}>
@@ -114,7 +147,7 @@ export default class CertificateScreen extends Component {
             return (
                 <View style={{ paddingTop: 20, flexDirection: 'row' }}>
                     <Text style={styles.text}>
-                        {this.state.fileName ? 'File Name\n' + this.state.fileName : ''}
+                        {this.state.filePath ? 'File Name\n' + this.state.filePath : 'john'}
                     </Text>
                 </View>
             )
@@ -127,16 +160,15 @@ export default class CertificateScreen extends Component {
             <View style={styles.container}>
                 <ScrollView style={{ width: '100%' }}>
                     <View style={styles.image1}>
-                        {this.allImages}
+                        {this.allImages()}
                     </View>
 
                     {certificates.map((item, i) => {
                         return (
-                            <View >
-
+                            <View  key={i}>
                                 <View style={styles.testpannel}>
                                     <Icon name='file-pdf-o' size={24} style={{ color: 'white' }} />
-                                    <View key={i} style={styles.testpannel2}>
+                                    <View  style={styles.testpannel2}>
 
                                         <Text style={styles.text}>{item}</Text>
                                         <View style={{ flexDirection: 'row' }}>
@@ -174,17 +206,29 @@ export default class CertificateScreen extends Component {
                             <TouchableOpacity
                                 style={styles.loginScreenButton}
                                 onPress={this.handleChange.bind(this)}>
-                                <Text style={styles.loginText}>Add Attachment</Text>
+                                <Text style={styles.loginText}>Filen</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity
                                 style={styles.loginScreenButton}
                                 onPress={this.chooseFile}>
-                                <Text style={styles.loginText}>Ladda up bilder</Text>
+                                <Text style={styles.loginText}>Kamera</Text>
                             </TouchableOpacity>
 
 
                         </View>
+                        <View style={styles.main}>
+                            <TouchableOpacity
+                                style={styles.loginScreenButton}
+                                onPress={this.libraryPicker.bind(this)}>
+                                <Text style={styles.loginText}>Photos</Text>
+                            </TouchableOpacity>
+
+                            
+
+
+                        </View>
+                        
                     </View>
 
                 </Modal>

@@ -5,7 +5,7 @@ import { stackNavigator } from 'react-navigation';
 import toastr from 'toastr';
 import { PasswordPanel, IdentifierPanel, ForgotPasswordPanel } from './Inputpanels';
 import { connect } from 'react-redux';
-import { checkUser, loginUser } from '../store/actions/user_action';
+import { checkUser, loginUser,resetPassword,getRestToken} from '../store/actions/user_action';
 import { setTokens } from '../profile/utils';
 
 
@@ -45,7 +45,7 @@ class LoginForm extends Component {
             },
             loginType: {
                 Start: 0,
-                Pasword: 1,
+                Password: 1,
                 contactInfo: 2,
                 resetPass: 3
 
@@ -87,118 +87,143 @@ class LoginForm extends Component {
 
 
     }
-   
+
     verifyUser() {
         const { loginData } = this.state;
         this.setState({ loggingIn: true });
         if (loginData.identifier.value !== '') {
+            //console.log(loginData.identifier.value)
             this.props.checkUser(loginData.identifier.value).then(
                 (response) => {
-                    console.log(response)
+                    //console.log(response)
                     if (response.payload.hasPass) {
-                        
+
                         const checkUserData = response.payload;
-                        
+                        //console.log(checkUserData);
+
                         this.setState({
                             showPasswordPanel: true,
                             showIdentifierPanel: false,
                             showForgotPanel: true,
-                            loginData: { identifier: checkUserData.userName, email: checkUserData.email, smsphone: checkUserData.phone, password: '', newPassword: '', confirmPassword: '', pin: '' },
+                            loginData: {
+                                identifier: { value: checkUserData.userName },
+                                email: { value: checkUserData.email },
+                                smsphone: { value: checkUserData.phone },
+                                password: {value:''},
+                                newPassword: {value:''},
+                                confirmPassword: {value:''},
+                                 pin: {value:''}
+                            },
                             loggingIn: false
+                        }, () => {
+                            this.handleSetLoginType(checkUserData.hasPass ? 1 : 2);
+                            //console.log('state.loginData', this.state.loginData)
                         });
-                        this.handleSetLoginType(checkUserData.hasPass ? 1 : 2);
+
                     } else {
                         this.setState({
                             showForgotPanel: true,
                             loggingIn: false
                         })
                     }
-                }).catch(error=>{
-                    this.setState({errors:'Personnumret finns ej . Kontakta skolan.',loggingIn:false})
+                }).catch(error => {
+                    this.setState({ errors: 'Personnumret finns ej . Kontakta skolan.', loggingIn: false })
                     alert(this.state.errors)
                 })
         } else {
-            this.setState({loggingIn: false });
-            alert('Personnummer krävs.' )
+            this.setState({ loggingIn: false });
+            alert('Personnummer krävs.')
         }
     }
-    manageAccess=()=>{
-        const {navigation} = this.props
-        if(this.props.User.user.exp){
+    manageAccess = () => {
+        const { navigation } = this.props
+
+        if (this.props.User.user.exp) {
             alert(this.props.User.user)
-        }else{
-            setTokens(this.props.User.user,()=>{
-                this.setState({hasErrors: false});
+        } else {
+            setTokens(this.props.User.user, () => {
+                this.setState({ hasErrors: false });
                 navigation('home');
+
 
             })
         }
 
     }
     login() {
-        const {navigation} = this.props;
-        const {loginData} = this.state;
-        if (!this.loginFormIsValid()) {
-            return (
-                alert('some errors')
-            );
-        }else{
-            this.setState({ loggingIn: true, errors: {} })
-            if(loginData.password == ''){
-            
-            this.props.loginUser(loginData).then((response) => {
-                //if(response.password != ''){
-                //this.manageAccess();
-               //alert(response.payload);
-               navigation('home');
+        const { navigation } = this.props;
+        const { loginData, loginType } = this.state;
+        if (loginData.password.value !== '') {
+            //this.setState({ loggingIn: true, errors: {} })
+            this.props.loginUser({ identifier: loginData.identifier.value, password: loginData.password.value }).then((response) => {
+                this.setState({ loginType: loginType.Start, loggingIn: false })
+                //if(response.loginData.password !== ''){750
+                navigation('home');
 
                 //}else{
-                    //alert('Lösenord krävs')
+                //alert('Lösenord krävs')
                 //}
-                
-               
-    
-            }).catch(error=>{
+
+
+
+            }).catch(error => {
                 console.log(error)
 
             })
-        }else{
-                alert('Lösenord krävs');
-            }
-    
-
+        } else {
+            alert('Lösenord krävs');
         }
-       
-
-
     }
-    sendNewPass() {
-
-    }
+    
     handleKeyUp() {
 
     }
     resetPassword() {
-        this.setState({
-            showForgotPanel:true,
-            showIdentifierPanel:false,
-            showPasswordPanel:false
-        })
+        {/*const {token } = this.props;
+        this.props.getRestToken({identifier:this.state.loginData.identifier,token:token}).then((res)=>{
+            const {restPassTokenData } =res.identifier;
+            this.setState((prevState)=>({
+                showForgotPanel: true,
+                showIdentifierPanel: false,
+                showIdentifierPanel:false,
+                loginData:{identifier:restPassTokenData.identifier.value || prevState.loginData.identifier.value,
+                     email: resetPassTokenData.email.value || "", smsphone: resetPassTokenData.phone.value || "", 
+                     password: "", newPassword: "", confirmPassword: "", pin: "" }
+            }),()=>this.handleSetLoginType(loginType.resetPass))
+        })*/}
+       this.setState({
+           showForgotPanel:true,
+           showIdentifierPanel:false,
+           showPasswordPanel:false
+       })
+       
 
+    }
+    sendNewPass() {
+        const { navigation } = this.props;
+        const { identifier,pin,newPassword,confirmPassword} = this.state.loginData
+        this.props.resetPassword(identifier,pin,newPassword,confirmPassword)
+        .then((res)=>{
+            navigation('home');
+            this.hideForgotPanel();
+
+        }).catch(error=>{
+            console.log(error)
+        })
     }
     loginFormIsValid() {
         let formIsValid = true;
         const { loginType, loginData } = this.state;
-        const errors = this.state.errors
+        const errors = Object.assign({}, this.state.errors)
         if (loginData.identifier.length < 1) {
             errors.identifier = 'Personnummer krävs';
             formIsValid = false;
         }
         switch (loginType) {
-            case loginType.Pasword:
+            case loginType.Password:
                 if (loginData.password.length < 1) {
                     errors.password = 'Lösenord krävs';
-                    this.updatedLoginData.focus();
+                    //this.updatedLoginData.focus();
                 }
                 break;
             case loginType.contactInfo:
@@ -256,16 +281,15 @@ class LoginForm extends Component {
             return (
                 <View style={styles.identifier}>
                     <IdentifierPanel
-                        loginData={loginData}
+                        loginData={loginData.identifier}
                         onChangeText={value => this.onChangeText('identifier', value)}
-                        value={this.state.loginData.identifier.value}
                         errors={errors}
                         showpanel={showIdentifierPanel}
                         loggingIn={loggingIn}
                         verifyuser={this.verifyUser}
 
                     />
-                   
+
                 </View>
             )
 
@@ -275,23 +299,22 @@ class LoginForm extends Component {
                 <View style={styles.password}>
 
                     <PasswordPanel
-                        loginData={loginData}
+                        loginData={loginData.password}
                         onChangeText={value => this.onChangeText('password', value)}
-                        value={this.state.loginData.password.value}
                         errors={errors}
                         showpanel={showPasswordPanel}
                         handleHidePanel={this.hidePasswordPanel}
                         login={this.login}
                         loginType={loginType}
+                        resetPassword={this.resetPassword}
                         loggingIn={loggingIn}
-                        verifyUser={this.verifyUser}
 
                     />
                 </View>
 
             )
         }
-        else if(showForgotPanel){
+        else if (showForgotPanel) {
             return (
                 <View style={styles.forgotPassword}>
                     <ForgotPasswordPanel
@@ -299,8 +322,7 @@ class LoginForm extends Component {
                         onChangeText={value => this.onChangeText('newPassword', value)}
                         errors={errors}
                         showpanel={showForgotPanel}
-                        handleHidePanel={this.hideForgotPanel}
-                        login={this.login}
+                        handleHidePanel={!this.hideForgotPanel}
                         loggingIn={loggingIn}
                         sendNewPass={this.sendNewPass}
 
@@ -309,7 +331,7 @@ class LoginForm extends Component {
 
             )
         }
-        else{
+        else {
             return (
                 <View style={styles.identifier}>
                     <IdentifierPanel
@@ -323,7 +345,7 @@ class LoginForm extends Component {
                     />
                 </View>
             )
-            
+
         }
     }
 
@@ -353,11 +375,21 @@ const styles = StyleSheet.create({
 
 
     },
-    identifier:{
-        borderColor: '#707070',    
+    identifier: {
+        borderColor: '#707070',
         textAlign: 'center',
-        
-      
+
+
+    },
+    password: {
+        borderColor: '#707070',
+        textAlign: 'center',
+
+
+    },
+    forgotPassword:{
+        borderColor: '#707070',
+        textAlign: 'center',
     }
 
 })
@@ -373,6 +405,13 @@ const mapDispatchToProps = (dispatch) => ({
     loginUser: (loginData) => {
         return dispatch(loginUser(loginData))
 
+    },
+    getRestToken:(loginData)=>{
+        return dispatch(getRestToken(loginData))
+
+    },
+    resetPassword:(loginData)=>{
+        return dispatch(resetPassword(loginData))
     }
 
 

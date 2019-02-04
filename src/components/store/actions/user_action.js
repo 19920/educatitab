@@ -7,6 +7,8 @@ import
     AUTO_SIGN_IN,
     GET_USER_TESTS,
     COMPLETEDTESTDATA_LOAD_SUCCESS,
+    PASSWORDRESET_SUCCESS,
+    GETPASSRESETTOKEN_SUCCESS,
     LocalStorekeys
 } from '../types';
 import { AsyncStorage } from "react-native"
@@ -43,6 +45,7 @@ export function checkUser(identifier) {
 
 }
 export function LoginUserSuccess(response){
+   
     return{
         type:'LOGIN_USER',
         payload:response
@@ -50,13 +53,14 @@ export function LoginUserSuccess(response){
 }
 
 export function loginUser(data){
+   
     return function(dispatch){
         return axios.post(URL + 'Login',{
             identifier: data.identifier,
             password: data.password
-
+           
         }).then(response=>{
-            //console.log(response);
+            //console.log(response.data);
             const {token} = response.data;
        
             AsyncStorage.setItem(LocalStorekeys.JWTTOKEN, token).then(()=>{
@@ -65,7 +69,7 @@ export function loginUser(data){
                  
             setAuthorizationToken(token);
             let decodeToken = jwtDecode(token);
-            //alert(JSON.stringify(decodeToken))
+            //console.log(decodeToken)
             return dispatch(LoginUserSuccess(decodeToken))
 
             })
@@ -111,3 +115,48 @@ export function LogoutUser(){
     }
 }
 
+
+
+export function resetPasswordSuccess(response){
+    return{
+        type:PASSWORDRESET_SUCCESS,
+        payload:response
+    }
+}
+
+export function resetPassword(data){
+    return function(dispatch){
+        return axios.post(URL + 'restpasswordaction',{
+            identifier:data.identifier,
+            pin:data.pin,
+            newPassword:data.newPassword,
+            confirmPassword:data.confirmPassword
+        }).then((res)=>{
+            const token = res.data.token;
+            AsyncStorage.setItem(LocalStorekeys.JWTTOKEN,token);
+            setAuthorizationToken(token);
+            dispatch(LoginUserSuccess);
+            return dispatch(resetPasswordSuccess(res.data));
+        }).catch(err =>{
+            console.log(err)
+        })
+    }
+
+}
+export function getResetPassTokenSuccess(response){
+    return{
+        type:GETPASSRESETTOKEN_SUCCESS,
+        payload:response
+    }
+}
+
+export function getRestToken(data){
+    return function(dispatch){
+        return axios.post(URL + 'getrestpasswordtoken',{data}).then((res)=>{
+            console.log(URL);
+            return dispatch(getResetPassTokenSuccess(res.data));
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+}

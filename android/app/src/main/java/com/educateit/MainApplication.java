@@ -3,6 +3,7 @@ package com.educateit;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+//import org.opencv.DocumentScannerPackage;
 import com.fileopener.FileOpenerPackage;
 import com.reactlibrary.RNPdfScannerPackage;
 import com.reactnativedocumentpicker.ReactNativeDocumentPicker;
@@ -28,6 +29,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            //new DocumentScannerPackage(),
             new FileOpenerPackage(),
             new RNPdfScannerPackage(),
             new ReactNativeDocumentPicker(),
