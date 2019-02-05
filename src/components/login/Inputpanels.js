@@ -69,7 +69,7 @@ export const PasswordPanel=(props)=>{
             </View>
 
             <View style={styles.buttons2}>
-            <TouchableHighlight style={styles.buttons21} onPress={handleHidePanel}>
+            <TouchableHighlight style={styles.buttons21} onPress={()=>handleHidePanel}>
                 <Text><Icon name='ios-arrow-back' size={24}/></Text>
             </TouchableHighlight>
             <TouchableOpacity
@@ -89,50 +89,73 @@ export const PasswordPanel=(props)=>{
 } 
 
 export const ForgotPasswordPanel = (props) =>{
-    const {loginData,onChangeText,errors,showPanel,loggingIn,value,handleHidePanel,sendNewPass,showForgotPanel} = props;
+    const {loginData,onChangeText,errors,showPanel,loggingIn,handleHidePanel,sendNewPass,showForgotPanel} = props;
     return(
         <View style={styles.container2}>
         <View style={styles.title}>
         <Text style={styles.loggin}>Logga in</Text>
-        <View style = {styles.inputs}>
-            <PasswordInput 
+         </View>
+         <View style={{flexDirection:'column'}}>
+         <View style = {styles.inputs}>
+         <PasswordInput 
             name='newPassword'
             key='newPassword'
             label='Nytt lösenord'
             value={loginData.newPassword}
-            onChangeText={onChangeText}
+            onChangeText={(value)=>onChangeText('newPassword',value)}
             error={errors.NewPassword}
-            autofocus={showForgotPanel}
+            autoFocus={showPanel}
 
             />
-             <PasswordInput 
+            <PasswordInput 
             name='confirmPassword'
             key='confirmPassword'
             label='Bekräfta lösenord'
             value={loginData.confirmPassword}
-            onChangeText={onChangeText}
+            onChangeText={(value)=>onChangeText('confirmPassword',value)}
             error={errors}
 
             />
-             <TextInputs 
+            <TextInputs 
              name='pin'
              label='PIN'
              key='pin'
              value={loginData.pin}
-             onChangeText={onChangeText}
+             onChangeText={(value)=>onChangeText('pin',value)}
              error={errors}
              />
-             <View style={styles.buttons2}>
-            <TouchableHighlight style={styles.buttons21} onPress={handleHidePanel}>
+            </View>
+            </View>
+
+            <View style={styles.buttons2}>
+            <TouchableHighlight style={styles.buttons21} onPress={()=>handleHidePanel}>
                 <Text><Icon name='ios-arrow-back' size={24}/></Text>
             </TouchableHighlight>
-                 <TouchableHighlight onPress={sendNewPass}>
-                     <Text>{loggingIn ? 'loggar in ...':'spara och logga in'}</Text>
-                 </TouchableHighlight>
-             </View>
+            <TouchableOpacity
+                style={styles.loginScreenButton}
+                onPress={sendNewPass}
+                underlayColor='#fff'>
+             
+                    <Text style={styles.loginText}> {loggingIn ? 'Loggar in ...':'Logga in'}</Text>
+                </TouchableOpacity>
+           
+        
+                
+                </View>
+           
         </View>
-        </View>
-        </View>
+
+
+
+
+
+
+
+
+
+
+        
+      
     )
 
 }
@@ -144,13 +167,12 @@ const styles = StyleSheet.create({
 
     },
     container2:{
-        flexDirection:'column',
         backgroundColor:'white',
-        height:350
+        height:359
 
     },
     inputs:{
-        margin:10,
+        margin:5,
         
     },
     forgotButton:{
@@ -170,6 +192,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'space-between',
         margin:10
+
         
     },
     buttons22:{
@@ -210,6 +233,11 @@ const styles = StyleSheet.create({
           textAlign:'center',
           paddingLeft : 10,
           paddingRight : 10
-      }
+      },
+      loginText2:{
+        color:'white',
+        textAlign:'center',
+        
+    }
 
 })

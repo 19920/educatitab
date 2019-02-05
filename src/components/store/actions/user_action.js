@@ -15,7 +15,7 @@ import { AsyncStorage } from "react-native"
 import {setAuthorizationToken,removeAuthorizationToken } from '../../profile/utils';
 import jwtDecode from 'jwt-decode';
 import axios from 'axios'
-import { URL } from '../../url/url';
+import { URL,TESTDATAURL } from '../../url/url';
 
 
 
@@ -116,17 +116,19 @@ export function LogoutUser(){
 }
 
 
-
-export function resetPasswordSuccess(response){
+ export const IRestPasswordData = {
+    token:''
+}
+export function resetPasswordSuccess(IRestPasswordData){
     return{
         type:PASSWORDRESET_SUCCESS,
-        payload:response
+        payload:{IRestPasswordData}
     }
 }
 
 export function resetPassword(data){
     return function(dispatch){
-        return axios.post(URL + 'restpasswordaction',{
+        return axios.post(URL + 'resetpasswordaction',{
             identifier:data.identifier,
             pin:data.pin,
             newPassword:data.newPassword,
@@ -143,17 +145,27 @@ export function resetPassword(data){
     }
 
 }
-export function getResetPassTokenSuccess(response){
-    return{
-        type:GETPASSRESETTOKEN_SUCCESS,
-        payload:response
-    }
+export const IResetPassTokenData ={
+    email:'',
+    smsPhone:''
 }
 
+
+
+export const IgenerateToken = {
+    identifier:'',
+    token:''
+}
+export function getResetPassTokenSuccess(data){
+    return{
+        type:GETPASSRESETTOKEN_SUCCESS,
+        payload:{data}
+    }
+}
 export function getRestToken(data){
     return function(dispatch){
-        return axios.post(URL + 'getrestpasswordtoken',{data}).then((res)=>{
-            console.log(URL);
+        return axios.post(TESTDATAURL + 'getresetpasswordtoken',{data}).then((res)=>{
+           // console.log(res)
             return dispatch(getResetPassTokenSuccess(res.data));
         }).catch(err=>{
             console.log(err);

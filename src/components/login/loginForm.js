@@ -179,30 +179,32 @@ class LoginForm extends Component {
 
     }
     resetPassword() {
-        {/*const {token } = this.props;
-        this.props.getRestToken({identifier:this.state.loginData.identifier,token:token}).then((res)=>{
-            const {restPassTokenData } =res.identifier;
-            this.setState((prevState)=>({
+       const {token } = this.props;
+       const { loginData,loginType } = this.state;
+        this.props.getRestToken({identifier:loginData.identifier.value,token:token}).then(response=>{
+            //console.log(response)
+            const restPassTokenData  = response.payload.data;
+            console.log(restPassTokenData);
+            this.setState((prevState)=> ({
+                showPasswordPanel: false,
                 showForgotPanel: true,
-                showIdentifierPanel: false,
-                showIdentifierPanel:false,
-                loginData:{identifier:restPassTokenData.identifier.value || prevState.loginData.identifier.value,
-                     email: resetPassTokenData.email.value || "", smsphone: resetPassTokenData.phone.value || "", 
-                     password: "", newPassword: "", confirmPassword: "", pin: "" }
-            }),()=>this.handleSetLoginType(loginType.resetPass))
-        })*/}
-       this.setState({
-           showForgotPanel:true,
-           showIdentifierPanel:false,
-           showPasswordPanel:false
-       })
+                loginData:{identifier:restPassTokenData.identifier || prevState.loginData.identifier.value,
+                email:restPassTokenData.email || '',
+                smsphone:restPassTokenData.phone || '',
+                password:'',
+                newPassword:'',
+                confirmPassword:'',
+                pin:''
+            }
+            }), () => this.handleSetLoginType(loginType.resetPass));
+        });
        
 
     }
     sendNewPass() {
         const { navigation } = this.props;
         const { identifier,pin,newPassword,confirmPassword} = this.state.loginData
-        this.props.resetPassword(identifier,pin,newPassword,confirmPassword)
+        this.props.resetPassword(identifier.value,pin.value,newPassword.value,confirmPassword.value)
         .then((res)=>{
             navigation('home');
             this.hideForgotPanel();
@@ -271,7 +273,7 @@ class LoginForm extends Component {
     }
     hideForgotPanel() {
         this.setState({
-            showForgotPanel: false, showPasswordPanel: true, loginType: loginType.Pasword
+            showForgotPanel: false, showPasswordPanel: true, loginType: loginType.Pasword,showIdentifierPanel:false
         });
 
     }
@@ -319,10 +321,10 @@ class LoginForm extends Component {
                 <View style={styles.forgotPassword}>
                     <ForgotPasswordPanel
                         loginData={loginData}
-                        onChangeText={value => this.onChangeText('newPassword', value)}
+                        onChangeText={value => this.onChangeText(value)}
                         errors={errors}
                         showpanel={showForgotPanel}
-                        handleHidePanel={!this.hideForgotPanel}
+                        handleHidePanel={this.hideForgotPanel}
                         loggingIn={loggingIn}
                         sendNewPass={this.sendNewPass}
 
@@ -352,10 +354,10 @@ class LoginForm extends Component {
 
 
     render() {
-
+ const {showForgotPanel} = this.state;
 
         return (
-            <View style={styles.container}>
+            <View style={{ borderColor: '#707070', borderWidth: 1, backgroundColor:'white',textAlign: 'center',height:(showForgotPanel?360:252)}}>
                 {this.showAllPanels()}
                 {this.state.erros}
 
@@ -366,15 +368,6 @@ class LoginForm extends Component {
     }
 }
 const styles = StyleSheet.create({
-    container: {
-
-        borderColor: '#707070',
-        borderWidth: 1,
-        height: 252,
-        textAlign: 'center'
-
-
-    },
     identifier: {
         borderColor: '#707070',
         textAlign: 'center',
@@ -384,12 +377,14 @@ const styles = StyleSheet.create({
     password: {
         borderColor: '#707070',
         textAlign: 'center',
+   
 
 
     },
     forgotPassword:{
         borderColor: '#707070',
         textAlign: 'center',
+
     }
 
 })
@@ -406,12 +401,12 @@ const mapDispatchToProps = (dispatch) => ({
         return dispatch(loginUser(loginData))
 
     },
-    getRestToken:(loginData)=>{
-        return dispatch(getRestToken(loginData))
+    getRestToken:(data)=>{
+        return dispatch(getRestToken(data))
 
     },
-    resetPassword:(loginData)=>{
-        return dispatch(resetPassword(loginData))
+    resetPassword:(Data)=>{
+        return dispatch(resetPassword(Data))
     }
 
 
