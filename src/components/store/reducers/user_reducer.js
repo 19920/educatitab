@@ -9,7 +9,7 @@ import {CHECK_USER_SUCCESS,
 } from '../types';
 const InitialState = {
     isAuthenticated: false,
-    user: ''
+    User: ''
 }
 export default function(state=[InitialState.isAuthenticated,InitialState.user],action){
     switch(action.type){
@@ -17,14 +17,14 @@ export default function(state=[InitialState.isAuthenticated,InitialState.user],a
         return{...state,user:action.payload}
         break;
         case 'LOGIN_USER':
-        const updatedState = Object.assign({},{isAuthenticated: true,user:action.payload})
+        const updatedState = Object.assign({},{isAuthenticated: true,User:action.payload})
         return updatedState
         break;
         case 'LOGOUT_SUCCESS':
-        return  Object.assign({},{isAuthenticated: false,user:''})
+        return  Object.assign({},{isAuthenticated: false,User:''})
         break;
         case 'AUTO_SIGN_IN':
-        const updateState = Object.assign({},{isAuthenticated: true,user:action.payload})
+        const updateState = Object.assign({},{isAuthenticated: true,User:action.payload})
         return updateState
         default:
         return state

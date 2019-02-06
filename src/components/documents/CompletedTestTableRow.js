@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import {View,ScrollView,Text,TouchableOpacity,StyleSheet,Button} from 'react-native';
+import { Icon } from 'native-base';
 
 export const testInfo={
     name:'',
@@ -28,7 +29,7 @@ export default function CompletedTestTableRow(props) {
             
               <TouchableOpacity
                 style={styles.loginScreenButton}
-                onPress={()=>props.profilePdf(customerTestId)}
+                onPress={props.profilePdf}
                 underlayColor='#fff'>
                 <Text style={styles.loginText}>TestProfil</Text>
                 </TouchableOpacity>

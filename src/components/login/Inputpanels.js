@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import {View,Text,TextInput,StyleSheet,TouchableOpacity,TouchableHighlight} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import  PasswordInput  from '../common/PasswordInput';
+import  {PasswordInput}  from '../common/PasswordInput';
 import { TextInputs } from '../common/TextInput';
 
 
@@ -14,7 +14,8 @@ export const IdentifierPanel =(props)=>{
         <Text style={styles.loggin}>Logga in</Text>
          </View>
            <View style = {styles.inputs}>
-            <TextInputs name='identifier' 
+            <TextInputs 
+            name='identifier' 
             key='identifier' 
             label='Personnummer' 
             placeholder = 'yymmdd-xxxx' 
@@ -101,7 +102,7 @@ export const ForgotPasswordPanel = (props) =>{
             name='newPassword'
             key='newPassword'
             label='Nytt lösenord'
-            value={loginData.newPassword}
+            value={loginData.newPassword.value}
             onChangeText={(value)=>onChangeText('newPassword',value)}
             error={errors.NewPassword}
             autoFocus={showPanel}
@@ -111,7 +112,7 @@ export const ForgotPasswordPanel = (props) =>{
             name='confirmPassword'
             key='confirmPassword'
             label='Bekräfta lösenord'
-            value={loginData.confirmPassword}
+            value={loginData.confirmPassword.value}
             onChangeText={(value)=>onChangeText('confirmPassword',value)}
             error={errors}
 
@@ -120,7 +121,7 @@ export const ForgotPasswordPanel = (props) =>{
              name='pin'
              label='PIN'
              key='pin'
-             value={loginData.pin}
+             value={loginData.pin.value}
              onChangeText={(value)=>onChangeText('pin',value)}
              error={errors}
              />

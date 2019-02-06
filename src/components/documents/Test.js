@@ -4,15 +4,16 @@ import {connect} from 'react-redux';
 import CompletedTestTableRow from './CompletedTestTableRow';
 import {loadCompletedTestData} from '../store/actions/testData_action';
 import { Icon } from 'native-base';
+import FullTest from './FullTest';
 class TestScreen extends Component{
     constructor(props){
         super(props)
         this.state={
             
-           
+            selectedId:null
            
         }
-        this.profilePdf = this.profilePdf.bind(this);
+       //this.profilePdf = this.profilePdf.bind(this);
     }
     
     static navigationOptions ={
@@ -38,8 +39,10 @@ class TestScreen extends Component{
           },
           
     }
-    profilePdf(customerTestId){
-        alert('pdf' + customerTestId);
+    profilePdf=(customerTestId,name,schoolName,startDate,customId,productId,startLevel)=>{
+        console.log(customerTestId,name,schoolName,startDate,customId,productId,startLevel)
+        this.setState({selectedId:customerTestId})
+        
     }
   
     componentDidMount(){
@@ -59,15 +62,37 @@ class TestScreen extends Component{
              <ScrollView style={{width:'100%'}}>
             { this.props.completedTests.map((item,i)=>{
                
-                return<CompletedTestTableRow testInfo={item} key={i}/>
-                
+                return(
+                    <View  key={i}>
+                        <View>
+                            <CompletedTestTableRow
+                                testInfo={item}
+                                profilePdf={() => this.profilePdf(
+                                    item.customerTestId,
+                                    item.name,
+                                    item.schoolName,
+                                    item.startDate,
+                                    item.customerId,
+                                    item.productId,
+                                    item.startLevel)} />
+
+                        </View>
+
+                        
+
+                    </View>
+
+                )
+               
     
                 })}
+               
                     </ScrollView>
             
             :<View><Text>Du har inga resultat än</Text></View>}
+            
            
-        
+       
             </View>
         )
     }

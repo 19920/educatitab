@@ -1,36 +1,29 @@
 import React, { Component } from 'react'
 import {View,TextInput,Text,StyleSheet} from 'react-native';
 
-export default class PasswordInput extends Component {
-    constructor(props){
-        super(props)
-    }
-    
-  render() {
-      const{errors,name,label,placeholder,value,onChangeText } = this.props;
-    return (
+export const PasswordInput = (props) => {
+  return (
         <View>
-        <Text style={styles.label}>{label}</Text>
+        <Text style={styles.label}>{props.label}</Text>
          <View style={styles.inputs}>
           <TextInput 
           type='password'
-          name={name}
-          placeholder={placeholder}
-          value={value}
-          onChangeText={onChangeText}
+          name={props.name}
+          placeholder={props.placeholder}
+          value={props.value}
+          onChangeText={props.onChangeText}
           secureTextEntry
           
           />
           </View >
          
-          <Text>{errors}</Text>
 
       </View>
         
    
     )
   }
-}
+
 
 const styles = StyleSheet.create({
   inputs:{

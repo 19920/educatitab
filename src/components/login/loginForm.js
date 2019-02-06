@@ -81,11 +81,12 @@ class LoginForm extends Component {
     }
 
     onChangeText(name, value) {
+        console.log(name,value)
         let loginDataCopy = Object.assign({}, this.state.loginData);
         loginDataCopy[name].value = value;
-        this.setState({ loginData: loginDataCopy })
+        this.setState({ loginData: loginDataCopy });
 
-
+        
     }
 
     verifyUser() {
@@ -203,9 +204,10 @@ class LoginForm extends Component {
     }
     sendNewPass() {
         const { navigation } = this.props;
-        const { identifier,pin,newPassword,confirmPassword} = this.state.loginData
-        this.props.resetPassword(identifier.value,pin.value,newPassword.value,confirmPassword.value)
+        const { loginData } = this.state
+        this.props.resetPassword(loginData.identifier.value,loginData.pin.value,loginData.newPassword.value,loginData.confirmPassword.value)
         .then((res)=>{
+            console.log(res);
             navigation('home');
             this.hideForgotPanel();
 
@@ -273,7 +275,7 @@ class LoginForm extends Component {
     }
     hideForgotPanel() {
         this.setState({
-            showForgotPanel: false, showPasswordPanel: true, loginType: loginType.Pasword,showIdentifierPanel:false
+            showForgotPanel: false, showPasswordPanel: true,showIdentifierPanel:false
         });
 
     }
@@ -284,7 +286,7 @@ class LoginForm extends Component {
                 <View style={styles.identifier}>
                     <IdentifierPanel
                         loginData={loginData.identifier}
-                        onChangeText={value => this.onChangeText('identifier', value)}
+                        onChangeText={(value) => this.onChangeText('identifier', value)}
                         errors={errors}
                         showpanel={showIdentifierPanel}
                         loggingIn={loggingIn}
@@ -302,7 +304,7 @@ class LoginForm extends Component {
 
                     <PasswordPanel
                         loginData={loginData.password}
-                        onChangeText={value => this.onChangeText('password', value)}
+                        onChangeText={(value) => this.onChangeText('password', value)}
                         errors={errors}
                         showpanel={showPasswordPanel}
                         handleHidePanel={this.hidePasswordPanel}
@@ -321,7 +323,7 @@ class LoginForm extends Component {
                 <View style={styles.forgotPassword}>
                     <ForgotPasswordPanel
                         loginData={loginData}
-                        onChangeText={value => this.onChangeText(value)}
+                        onChangeText={(value)=> this.onChangeText(value)}
                         errors={errors}
                         showpanel={showForgotPanel}
                         handleHidePanel={this.hideForgotPanel}
@@ -338,7 +340,7 @@ class LoginForm extends Component {
                 <View style={styles.identifier}>
                     <IdentifierPanel
                         loginData={loginData}
-                        onChangeText={value => this.onChangeText('identifier', value)}
+                        onChangeText={(value) => this.onChangeText('identifier', value)}
                         errors={errors}
                         showpanel={showIdentifierPanel}
                         loggingIn={loggingIn}
