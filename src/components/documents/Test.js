@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {View,Text,StyleSheet,ScrollView,Image,FlatList} from 'react-native';
+import {View,Text,StyleSheet,ScrollView,Image,FlatList,ImageBackground} from 'react-native';
 import {connect} from 'react-redux';
 import CompletedTestTableRow from './CompletedTestTableRow';
 import {loadCompletedTestData} from '../store/actions/testData_action';
@@ -15,30 +15,25 @@ class TestScreen extends Component{
         }
        //this.profilePdf = this.profilePdf.bind(this);
     }
-    
-    static navigationOptions ={
+
+
+    static navigationOptions = {
         title:'Testresultat',
-        headerBackTitle:'Home',
         headerStyle: {
-            backgroundColor: '#E53128',
-            paddingHorizontal: 8,
-            fontWeight: '300'
-          },
-         
-  
-          headerTitleStyle: {
-              fontWeight: '300',
-              textAlign: 'center',
-              fontSize:30,
-              color:'white',
-              flexGrow:1,
-              alignSelf:'center',
-              alignItems:'center'
+            backgroundColor: 'rgba(103,103,103,1)',
             
-            
-          },
-          
+        },
+
+        headerTitleStyle: {
+            fontWeight: '300',
+            flexGrow:1,
+            color: 'white',
+            fontSize: 20,
+           
+
+        }
     }
+   
     profilePdf=(customerTestId,name,schoolName,startDate,customId,productId,startLevel)=>{
         console.log(customerTestId,name,schoolName,startDate,customId,productId,startLevel)
         this.setState({selectedId:customerTestId})
@@ -56,6 +51,7 @@ class TestScreen extends Component{
     render(){
         
         return(
+            <ImageBackground source={require('../../../assets/backImage.png')} style={{width: '100%', height: '100%'}}>
             <View style={styles.container}>
            
             {this.props.completedTests ?
@@ -81,6 +77,8 @@ class TestScreen extends Component{
                         
 
                     </View>
+                  
+                    
 
                 )
                
@@ -94,6 +92,7 @@ class TestScreen extends Component{
            
        
             </View>
+            </ImageBackground>
         )
     }
 

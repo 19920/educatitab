@@ -73,13 +73,15 @@ class LoginForm extends Component {
         this.showAllPanels = this.showAllPanels.bind(this);
         this.loginFormIsValid = this.loginFormIsValid.bind(this);
         this.manageAccess = this.manageAccess.bind(this);
-
+    this.textInputRef = React.createRef()
     }
     handleSetLoginType() {
 
 
     }
-
+ componentDidMount(){
+     this.textInputRef.current.focus()
+ }
     onChangeText(name, value) {
         console.log(name,value)
         let loginDataCopy = Object.assign({}, this.state.loginData);
@@ -275,7 +277,7 @@ class LoginForm extends Component {
     }
     hideForgotPanel() {
         this.setState({
-            showForgotPanel: false, showPasswordPanel: true,showIdentifierPanel:false
+            showForgotPanel: false, showPasswordPanel: true
         });
 
     }
@@ -285,12 +287,13 @@ class LoginForm extends Component {
             return (
                 <View style={styles.identifier}>
                     <IdentifierPanel
+                       textInputRef={this.textInputRef}
                         loginData={loginData.identifier}
                         onChangeText={(value) => this.onChangeText('identifier', value)}
                         errors={errors}
-                        showpanel={showIdentifierPanel}
                         loggingIn={loggingIn}
                         verifyuser={this.verifyUser}
+                        autofocus={true}
 
                     />
 
@@ -303,15 +306,15 @@ class LoginForm extends Component {
                 <View style={styles.password}>
 
                     <PasswordPanel
+                        textInputRef={this.textInputRef}
                         loginData={loginData.password}
                         onChangeText={(value) => this.onChangeText('password', value)}
-                        errors={errors}
-                        showpanel={showPasswordPanel}
                         handleHidePanel={this.hidePasswordPanel}
                         login={this.login}
                         loginType={loginType}
                         resetPassword={this.resetPassword}
                         loggingIn={loggingIn}
+                        errors={errors}
 
                     />
                 </View>
@@ -326,7 +329,7 @@ class LoginForm extends Component {
                         onChangeText={(value)=> this.onChangeText(value)}
                         errors={errors}
                         showpanel={showForgotPanel}
-                        handleHidePanel={this.hideForgotPanel}
+                        hideForgotPanel={this.hideForgotPanel}
                         loggingIn={loggingIn}
                         sendNewPass={this.sendNewPass}
 
@@ -359,7 +362,7 @@ class LoginForm extends Component {
  const {showForgotPanel} = this.state;
 
         return (
-            <View style={{ borderColor: '#707070', borderWidth: 1, backgroundColor:'white',textAlign: 'center',height:(showForgotPanel?360:252)}}>
+            <View>
                 {this.showAllPanels()}
                 {this.state.erros}
 
@@ -373,12 +376,15 @@ const styles = StyleSheet.create({
     identifier: {
         borderColor: '#707070',
         textAlign: 'center',
+  
+        
 
 
     },
     password: {
         borderColor: '#707070',
         textAlign: 'center',
+
    
 
 
@@ -386,6 +392,11 @@ const styles = StyleSheet.create({
     forgotPassword:{
         borderColor: '#707070',
         textAlign: 'center',
+        borderColor: 'white', 
+        borderWidth: 0, 
+        backgroundColor:'white',
+        textAlign: 'center',
+        height:360
 
     }
 

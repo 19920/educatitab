@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet,TextInput } from 'react-native';
 
 const Input = (props) =>{
@@ -8,6 +8,7 @@ const Input = (props) =>{
         template=
         
         <TextInput 
+        autoFocus={true}
         {...props}
         style={styles.input} 
         />

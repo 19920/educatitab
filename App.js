@@ -15,6 +15,7 @@ import DiplomaScreen from './src/components/documents/DiplomaScreen';
 import AddCertificateScreen from './src/components/documents/AddCertificateScreen';
 import CertificateScreen from './src/components/documents/CertificateScreen';
 import TestScreen from './src/components/documents/Test';
+import FullTest from './src/components/documents/FullTest';
 import ProfileScreen from './src/components/profile/ProfileScreen';
 import MycvScreen from './src/components/documents/MyCv';
 import loginForm from './src/components/login/loginForm';
@@ -27,7 +28,7 @@ const instructions = Platform.select({
 });
 
 const navStyle={
-  navaBarTextFontSize:20,
+  navaBarTextFontSize:30,
   navBarTextColor:'#ffffff',
   navBarTitleTextCentered:true,
   navBarBackgroundColor:'#00ADA9'
@@ -55,16 +56,9 @@ const ProfileNav = createStackNavigator({
     screen:ProfileScreen,
     
   },
-  myCV:{
-    screen:MycvScreen
-  }
   
 })
-const myTestsNav = createStackNavigator({
-  home:{
-    screen:HomeScreen,
-      
-  },
+const underHomeNav = createStackNavigator({
   test:{
     screen:TestScreen,
    
@@ -79,18 +73,21 @@ const myTestsNav = createStackNavigator({
     screen:AddCertificateScreen
   }
    
- 
-   
+})
+const myTestsNav = createStackNavigator({
+  home:{
+    screen:HomeScreen,
+      
+  },
+  
 })
 const AppTabNavigator = createBottomTabNavigator({
   home:{
-    screen:myTestsNav,
-    title:'Home',
+    screen:HomeScreen,
     navigatorStyle:navStyle,
-    
     navigationOptions:({navigation})=>({
       tabBarIcon:({tintColor})=>(
-        <Icon name ='md-home' size={24}/>
+        <Icon name ='md-home' size={34}/>
       )
     })
     
@@ -100,7 +97,7 @@ const AppTabNavigator = createBottomTabNavigator({
     title:'Profile',
     navigationOptions:({navigation})=>({
       tabBarIcon:({tintColor})=>(
-        <Icon name ='md-person' size={24}/>
+        <Icon name ='md-person' size={34}/>
       )
     })
   },
@@ -111,22 +108,39 @@ const AppStackNavigator = createStackNavigator({
     screen:AppTabNavigator,
     navigationOptions:({navigation})=>({
       headerStyle:{
-        backgroundColor:'rgba(103,103,103,1)',
+        backgroundColor:'#676767',
         opacity:1
 
       },
       headerTitle: (
-        <Image source={require('./assets/logo.png')} style={{width:'100%',height:'100%'}}/>
+        <Image source={require('./assets/logo.png')} style={{width:270,height:80,marginLeft:15}}/>
     ),
       headerLeft:(
         <TouchableOpacity onPress={()=>navigation.toggleDrawer()}>
-        <View style={{paddingHorizontal:10}}>
+        <View style={{paddingHorizontal:8}}>
         <Icon name='md-menu' size={24} style={{color:'white'}}/>
         </View>
         </TouchableOpacity>
 
       )
     })
+  },
+  test:{
+    screen:TestScreen,
+   
+  },
+  FullTest:{
+    screen:FullTest
+
+  },
+  diploma:{
+    screen:DiplomaScreen
+  },
+  certificate:{
+    screen:CertificateScreen
+  },
+  addCertificate:{
+    screen:AddCertificateScreen
   }
 })
 const AppDrawerNavigator = createDrawerNavigator({

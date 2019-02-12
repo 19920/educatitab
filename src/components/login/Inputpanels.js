@@ -7,7 +7,7 @@ import { TextInputs } from '../common/TextInput';
 
 
 export const IdentifierPanel =(props)=>{
-    const {loginData,onChangeText,errors,showPanel,verifyuser,loggingIn} = props;
+    const {loginData,onChangeText,errors,showPanel,verifyuser,loggingIn,textInputRef} = props;
     return(
         <View style={styles.container}>
         <View style={styles.title}>
@@ -15,6 +15,7 @@ export const IdentifierPanel =(props)=>{
          </View>
            <View style = {styles.inputs}>
             <TextInputs 
+            refs={textInputRef}
             name='identifier' 
             key='identifier' 
             label='Personnummer' 
@@ -22,7 +23,8 @@ export const IdentifierPanel =(props)=>{
             value={loginData.identifier}
             onChangeText={onChangeText}
             error={errors.identifier}
-            autofocus={showPanel}
+           
+         
            
             />
             </View>
@@ -40,7 +42,7 @@ export const IdentifierPanel =(props)=>{
 }
 
 export const PasswordPanel=(props)=>{
-    const {loginData,onChangeText,errors,login,handleHidePanel,resetPassword,loggingIn,loginType,showPanel} = props;
+    const {loginData,onChangeText,errors,login,handleHidePanel,resetPassword,loggingIn,loginType,textInputRef} = props;
     return(
    
         <View style={styles.container}>
@@ -50,6 +52,7 @@ export const PasswordPanel=(props)=>{
          <View style={{flexDirection:'column'}}>
          <View style = {styles.inputs}>
             <PasswordInput
+            refs={textInputRef}
             name='password'
             key='password'
             label='Lösenord'
@@ -57,7 +60,7 @@ export const PasswordPanel=(props)=>{
             onChangeText={onChangeText}
             error={errors.password}
             autofocus={loginType === 1}
-            showPanel={showPanel}
+        
             
 
             />
@@ -70,7 +73,7 @@ export const PasswordPanel=(props)=>{
             </View>
 
             <View style={styles.buttons2}>
-            <TouchableHighlight style={styles.buttons21} onPress={()=>handleHidePanel}>
+            <TouchableHighlight style={styles.buttons21} onPress={handleHidePanel}>
                 <Text><Icon name='ios-arrow-back' size={24}/></Text>
             </TouchableHighlight>
             <TouchableOpacity
@@ -90,7 +93,7 @@ export const PasswordPanel=(props)=>{
 } 
 
 export const ForgotPasswordPanel = (props) =>{
-    const {loginData,onChangeText,errors,showPanel,loggingIn,handleHidePanel,sendNewPass,showForgotPanel} = props;
+    const {loginData,onChangeText,errors,showPanel,loggingIn,hideForgotPanel,sendNewPass,showForgotPanel} = props;
     return(
         <View style={styles.container2}>
         <View style={styles.title}>
@@ -129,7 +132,7 @@ export const ForgotPasswordPanel = (props) =>{
             </View>
 
             <View style={styles.buttons2}>
-            <TouchableHighlight style={styles.buttons21} onPress={()=>handleHidePanel}>
+            <TouchableHighlight style={styles.buttons21} onPress={hideForgotPanel}>
                 <Text><Icon name='ios-arrow-back' size={24}/></Text>
             </TouchableHighlight>
             <TouchableOpacity
@@ -165,6 +168,7 @@ const styles = StyleSheet.create({
         flexDirection:'column',
         backgroundColor:'white',
         height:250
+       
 
     },
     container2:{
@@ -206,9 +210,10 @@ const styles = StyleSheet.create({
         color:'white'
     },
     title:{
-        backgroundColor:'red',
+        backgroundColor:'#E53128',
         height:40,
-        alignItems:'center'
+        alignItems:'center',
+  
         
     },
     loggin:{
@@ -223,11 +228,11 @@ const styles = StyleSheet.create({
         marginBottom:10,
         paddingTop:10,
         paddingBottom:10,
-        backgroundColor:'red',
+        backgroundColor:'#E53128',
         borderRadius:10,
         alignItems:'center',
-        borderWidth: 1,
-        borderColor: 'black'
+        borderWidth: 0,
+        borderColor: 'white'
       },
       loginText:{
           color:'white',

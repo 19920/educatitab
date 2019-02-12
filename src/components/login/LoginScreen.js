@@ -23,24 +23,9 @@ class LoginScreen extends Component{
         this.showLogin = this.showLogin.bind(this);
         this.getTokens = this.getTokens.bind(this);
     }
-    static navigationOptions = {
-        title: 'Welcome',
-        headerStyle: {
-          backgroundColor: 'black',
-          fontWeight: '300'
-        },
-
-        headerTitleStyle: {
-            fontWeight: '300',
-            textAlign: 'center',
-            color:'white',
-            flexGrow:1,
-            
-          
-          
-        }
-        
-      }
+    static navigationOptions ={
+        header: null
+    }
       getTokens=()=>{
         const store = ConfigureStore();
         AsyncStorage.getItem(LocalStorekeys.JWTTOKEN).then((token)=>{

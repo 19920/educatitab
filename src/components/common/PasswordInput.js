@@ -7,6 +7,8 @@ export const PasswordInput = (props) => {
         <Text style={styles.label}>{props.label}</Text>
          <View style={styles.inputs}>
           <TextInput 
+          ref={props.refs}
+          style={styles.textInput}
           type='password'
           name={props.name}
           placeholder={props.placeholder}
@@ -34,13 +36,21 @@ const styles = StyleSheet.create({
           backgroundColor:'white',
           color:'black',
           textAlign:'center',
-          justifyContent:'center'
-          
+          justifyContent:'center',
+          borderRadius:10,
+          marginRight:10,
+          marginLeft:10,
+          marginTop:5
   },
   label:{
-    fontSize:20
+    fontSize:20,
+    marginLeft:10,
+    marginRight:10
   },
-  title:{
-    backgroundColor:'red'
+  textInput:{
+    textAlign:'auto',
+    fontSize:18,
+    marginLeft:5,
+    paddingTop:5,
   }
 })

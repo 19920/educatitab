@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {View,Text,StyleSheet,TouchableHighlight} from 'react-native';
+import {View,Text,StyleSheet,TouchableHighlight,ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icons from 'react-native-vector-icons/AntDesign';
 import Iconss from 'react-native-vector-icons/FontAwesome';
@@ -19,7 +19,7 @@ export default class HomeScreen extends Component{
         return(
             <View style={styles.container}>
            
-          
+           <ScrollView style={{ width: '100%' }}>
            
                 <TouchableHighlight style={styles.results} onPress={()=>this.props.navigation.navigate('test')}>
                 <View>
@@ -47,7 +47,7 @@ export default class HomeScreen extends Component{
                     </View>
                 </TouchableHighlight>
                
-                   
+                </ScrollView>  
               
                
             </View>
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
  
      },
     results:{
-        backgroundColor:'red',
+        backgroundColor:'#E53128',
       
         width:'100%',
         height:90,
